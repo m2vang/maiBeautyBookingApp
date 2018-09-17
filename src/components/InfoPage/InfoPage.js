@@ -25,9 +25,11 @@ class InfoPage extends Component {
     if (this.props.user.email) {
       content = (
         <div>
-          <p>
-            Info Page
-          </p>
+          <p>First Name: {this.props.user.first_name}</p>
+          <p>Last Name: {this.props.user.last_name}</p>
+          <p>Telephone: {this.props.user.telephone}</p>
+          <p>Email: {this.props.user.email}</p>
+          <button>Edit</button>
         </div>
       );
     }
