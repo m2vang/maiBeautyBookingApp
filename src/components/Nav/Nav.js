@@ -16,7 +16,7 @@ const Nav = () => (
           </Link>
         </li>
         <li>
-          <Link to="/info">
+          <Link to="/bookappt">
             Book an Appointment
           </Link>
         </li>
