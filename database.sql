@@ -1,0 +1,8 @@
+CREATE TABLE "user" (
+	id SERIAL PRIMARY KEY,
+	first_name VARCHAR(1020) NOT NULL,
+	last_name VARCHAR(1020) NOT NULL,
+	telephone NUMERIC(15) NOT NULL,
+	email VARCHAR(3020) NOT NULL,
+	password VARCHAR(200) NOT NULL,
+	if_stylist BOOLEAN NOT NULL DEFAULT 'false');
