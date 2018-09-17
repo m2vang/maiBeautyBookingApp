@@ -7,12 +7,17 @@ const Nav = () => (
       <ul>
         <li>
           <Link to="/user">
-            User Home
+            Home
           </Link>
         </li>
         <li>
           <Link to="/info">
-            Info Page
+            My Profile
+          </Link>
+        </li>
+        <li>
+          <Link to="/info">
+            Book an Appointment
           </Link>
         </li>
       </ul>
