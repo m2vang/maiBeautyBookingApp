@@ -35,7 +35,7 @@ class UserPage extends Component {
           <h1
             id="welcome"
           >
-            Welcome, { this.props.user.email }!
+            Welcome, { this.props.user.first_name }!
           </h1>
           <p>Your ID is: {this.props.user.id}</p>
           <button
