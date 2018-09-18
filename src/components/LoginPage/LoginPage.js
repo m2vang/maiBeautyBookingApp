@@ -45,7 +45,6 @@ class LoginPage extends Component {
     this.setState({
       [propertyName]: event.target.value,
     });
-    console.log(this.state);
   }
 
   renderAlert() {

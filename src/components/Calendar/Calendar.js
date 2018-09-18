@@ -8,9 +8,15 @@ import { DragDropContext } from 'react-dnd';
 import './react-big-calendar.css';
 import moment from 'moment';
 
-
+import Nav from '../../components/Nav/Nav';
+import { USER_ACTIONS } from '../../redux/actions/userActions';
+import { connect } from 'react-redux';
 
 Calendar.setLocalizer(Calendar.momentLocalizer(moment));
+
+const mapStateToProps = state => ({
+    user: state.user,
+});
 
 class ApptCalendar extends Component {
     constructor(props) {
@@ -29,9 +35,15 @@ class ApptCalendar extends Component {
         }
     }
 
+    componentDidMount() {
+        this.props.dispatch({ type: USER_ACTIONS.FETCH_USER });
+    }
+
+
     render() {
         return (
             <div>
+                <Nav />
                 <Calendar
                     defaultDate={new Date()}
                     defaultView={Calendar.Views.WEEK}
@@ -54,4 +66,4 @@ class ApptCalendar extends Component {
     }
 }
 
-export default ApptCalendar;
+export default connect(mapStateToProps)(ApptCalendar);

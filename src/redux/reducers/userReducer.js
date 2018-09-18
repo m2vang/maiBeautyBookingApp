@@ -56,6 +56,17 @@ const email = (state = null, action) => {
   }
 };
 
+const if_stylist = (state = false, action) => {
+  switch (action.type) {
+    case USER_ACTIONS.SET_USER:
+      return action.user.if_stylist || state;
+    case USER_ACTIONS.UNSET_USER:
+      return null;
+    default:
+      return state;
+  }
+};
+
 const isLoading = (state = false, action) => {
   switch (action.type) {
     case USER_ACTIONS.REQUEST_START:
@@ -73,5 +84,6 @@ export default combineReducers({
   last_name,
   telephone,
   email,
+  if_stylist,
   isLoading,
 });

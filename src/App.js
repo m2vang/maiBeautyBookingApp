@@ -11,8 +11,9 @@ import LoginPage from './components/LoginPage/LoginPage';
 import RegisterPage from './components/RegisterPage/RegisterPage';
 import UserPage from './components/UserPage/UserPage';
 import InfoPage from './components/InfoPage/InfoPage';
-import ApptCalendar from './components/Calendar/Calendar';
+import AdminCalendar from './components/Calendar/Calendar';
 import BookAnAppt from './components/BookAnAppt/BookAnAppt';
+import ListOfClients from './components/ListOfClients/ListOfClients';
 
 import './styles/main.css';
 
@@ -44,7 +45,11 @@ const App = () => (
         />
         <Route
           path="/calendar"
-          component={ApptCalendar}
+          component={AdminCalendar}
+        />
+        <Route
+          path="/clients"
+          component={ListOfClients}
         />
         {/* OTHERWISE (no path!) */}
         <Route render={() => <h1>404</h1>} />
