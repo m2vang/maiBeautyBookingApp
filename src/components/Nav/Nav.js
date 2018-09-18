@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { USER_ACTIONS } from '../../redux/actions/userActions';
 
-
 const mapStateToProps = state => ({
   user: state.user,
 });
@@ -11,13 +10,13 @@ const mapStateToProps = state => ({
 class Nav extends Component {
   componentDidMount() {
     this.props.dispatch({ type: USER_ACTIONS.FETCH_USER });
-  }
+  } //end of componentDidMount
 
-  componentDidUpdate() {
-    if (!this.props.user.isLoading && this.props.user.email === null) {
-      this.props.history.push('home');
-    }
-  }
+  // componentDidUpdate() {
+  //   if (!this.props.user.isLoading && this.props.user.email=== null) {
+  //     this.props.history.push('home');
+  //   }
+  // } //end of componentDidUpdate
 
   render() {
     let content = null;
@@ -28,43 +27,31 @@ class Nav extends Component {
           <div>
             <ul>
               <li>
-                <Link to="/user">
-                  Home
-          </Link>
+                <Link to="/user"> Home </Link>
               </li>
               <li>
-                <Link to="/info">
-                  My Profile
-          </Link>
+                <Link to="/info"> My Profile </Link>
               </li>
               <li>
-                <Link to="/bookappt">
-                  Book an Appointment
-          </Link>
+                <Link to="/bookappt"> Book an Appointment </Link>
               </li>
             </ul>
           </div>
         </div>
       )
-    } else {
+    } else if (this.props.user.if_stylist === true ){
       content = (
         <div className="navbar">
           <div>
             <ul>
               <li>
-                <Link to="/info">
-                  My Profile
-                </Link>
+                <Link to="/info"> My Profile </Link>
               </li>
               <li>
-                <Link to="/calendar">
-                  Calendar
-                </Link>
+                <Link to="/calendar"> Calendar </Link>
               </li>
               <li>
-                <Link to="/clients">
-                  Clients
-                </Link>
+                <Link to="/clients"> Clients </Link>
               </li>
             </ul>
           </div>
@@ -77,8 +64,6 @@ class Nav extends Component {
       </div>
     )
   }
-
-
 };
 
 export default connect(mapStateToProps)(Nav);

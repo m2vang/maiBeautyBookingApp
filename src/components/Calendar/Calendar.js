@@ -39,6 +39,11 @@ class ApptCalendar extends Component {
         this.props.dispatch({ type: USER_ACTIONS.FETCH_USER });
     }
 
+    componentDidUpdate() {
+        if (!this.props.user.isLoading && this.props.user.email === null) {
+            this.props.history.push('home');
+        }
+    }
 
     render() {
         return (
