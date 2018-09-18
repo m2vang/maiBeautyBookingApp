@@ -18,9 +18,7 @@ class UserPage extends Component {
     if (!this.props.user.isLoading && this.props.user.email === null) {
       this.props.history.push('home');
     }
-  }
-
-  
+  }  
 
   render() {
     let content = null;

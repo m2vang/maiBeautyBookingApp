@@ -59,7 +59,13 @@ const email = (state = null, action) => {
 const if_stylist = (state = false, action) => {
   switch (action.type) {
     case USER_ACTIONS.SET_USER:
-      return action.user.if_stylist || state;
+      if (action.user.hasOwnProperty('if_stylist')) {
+        return (
+          action.user.if_stylist
+        )
+      } else {
+        return state;
+      }
     case USER_ACTIONS.UNSET_USER:
       return null;
     default:
