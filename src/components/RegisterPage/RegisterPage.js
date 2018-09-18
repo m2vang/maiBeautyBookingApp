@@ -18,7 +18,6 @@ class RegisterPage extends Component {
 
   registerUser = (event) => {
     event.preventDefault();
-
     if (this.state.first_name === '' || this.state.last_name === '' || this.state.telephone === '' 
       || this.state.email === '' || this.state.password === '') {
       this.setState({

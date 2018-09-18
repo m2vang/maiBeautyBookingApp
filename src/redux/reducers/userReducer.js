@@ -15,7 +15,7 @@ const id = (state = null, action) => {
 const first_name = (state = null, action) => {
   switch (action.type) {
     case USER_ACTIONS.SET_USER:
-      return action.user.first_name || state;
+      return action.user.first_name;
     case USER_ACTIONS.UNSET_USER:
       return null;
     default:
@@ -26,7 +26,7 @@ const first_name = (state = null, action) => {
 const last_name = (state = null, action) => {
   switch (action.type) {
     case USER_ACTIONS.SET_USER:
-      return action.user.last_name || state;
+      return action.user.last_name;
     case USER_ACTIONS.UNSET_USER:
       return null;
     default:
@@ -37,7 +37,7 @@ const last_name = (state = null, action) => {
 const telephone = (state = null, action) => {
   switch (action.type) {
     case USER_ACTIONS.SET_USER:
-      return action.user.telephone || state;
+      return action.user.telephone;
     case USER_ACTIONS.UNSET_USER:
       return null;
     default:

@@ -45,4 +45,21 @@ router.get('/logout', (req, res) => {
   res.sendStatus(200);
 });
 
+router.put('/register', (req, res, next) => {
+  console.log('req:', req.body);
+  
+  const first_name = req.body.first_name;
+  const last_name = req.body.last_name;
+  const telephone = req.body.telephone;
+
+  const queryText = `UPDATE "user" SET "first_name" = $1, "last_name" = $2, "telephone" = $3
+                      WHERE "id" = $4`;
+  pool.query(queryText, [first_name, last_name, telephone, req.user.id])
+    .then(result => res.sendStatus(200))
+    .catch(error => {
+      console.log('Error in PUT route', error);
+      res.sendStatus(500);
+    });
+});
+
 module.exports = router;
