@@ -14,6 +14,7 @@ import InfoPage from './components/InfoPage/InfoPage';
 import AdminCalendar from './components/Calendar/Calendar';
 import BookAnAppt from './components/BookAnAppt/BookAnAppt';
 import ListOfClients from './components/ListOfClients/ListOfClients';
+import ErrorPage from './components/ErrorPage/ErrorPage';
 
 import './styles/main.css';
 
@@ -52,7 +53,10 @@ const App = () => (
           component={ListOfClients}
         />
         {/* OTHERWISE (no path!) */}
-        <Route render={() => <h1>404</h1>} />
+        {/* <Route render={() => <h1>404</h1>} /> */}
+        <Route
+          component={ErrorPage}
+        />
 
       </Switch>
     </Router>
