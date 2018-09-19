@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
-
+//Nav is the navigation bar
 import Nav from '../../components/Nav/Nav';
+//Reducers
 import { USER_ACTIONS } from '../../redux/actions/userActions';
 
 const mapStateToProps = state => ({
   user: state.user,
-});
+}); //end of mapStateToProps
 
 class InfoPage extends Component {
   constructor(props) {
@@ -17,26 +18,28 @@ class InfoPage extends Component {
       edit: false,
       message: '',
     }
-  }
+  } //end of constructor
+
   componentDidMount() {
     this.props.dispatch({ type: USER_ACTIONS.FETCH_USER });
-  }
+  } //end of componentDidMount()
 
   componentDidUpdate() {
     if (!this.props.user.isLoading && this.props.user.email === null) {
       this.props.history.push('home');
-    }
-  }
+    } //end of if
+  } //end of componentDidUpdate()
 
+  //set edit to true
   edit = () => {
     this.setState({ edit: true });
-  }
+  } //end of edit()
 
+  //set edit to false
   cancelEdit = () => {
     this.setState({ edit: false });
     this.props.dispatch({ type: USER_ACTIONS.FETCH_USER });
-
-  }
+  } //end of cancelEdit()
 
   handleInputChangeFor = propertyName => (event) => {
     const action = {
@@ -46,7 +49,7 @@ class InfoPage extends Component {
       }
     }
     this.props.dispatch(action);
-  }
+  } //end of hanleInputChangeFor()
 
   renderAlert() {
     if (this.state.message !== '') {
@@ -60,7 +63,7 @@ class InfoPage extends Component {
       );
     }
     return (<span />);
-  }
+  } //end of renderAlert()
 
   updateUser = (event) => {
     event.preventDefault();
@@ -74,9 +77,8 @@ class InfoPage extends Component {
         last_name: this.props.user.last_name,
         telephone: this.props.user.telephone,
       };
-
-      console.log('BODY',body);
       
+      //axios PUT to update user's info
       axios.put('/api/user/register/', body)
         .then((response) => {
           if (response.status === 200) {
@@ -85,19 +87,20 @@ class InfoPage extends Component {
             this.setState({
               message: 'Ooops! Please make sure all fields are filled',
             })
-          }
-        })
+          } //end of if-else
+        }) //end of .then
         .catch(() => {
           this.setState({
             message: 'Ooops! Please try updating again later.',
           });
-        })
-    }
-  }
+        }) //end of .catch
+    } //end of if-else
+  } //end of InfoPage class
 
   render() {
     let content = null;
 
+    //if edit is false show this on DOM
     if (this.state.edit === false) {
       content = (
         <div>
@@ -106,8 +109,8 @@ class InfoPage extends Component {
           <p>Telephone: {this.props.user.telephone}</p>
           <button onClick={this.edit}>Edit</button>
         </div>
-      );
-    } else {
+      ) //end of content for edit=false
+    } else { //otherwise show this on DOM
       content = (
         <div>
           <form onSubmit={this.updateUser}>
@@ -138,7 +141,7 @@ class InfoPage extends Component {
               <label htmlFor="telephone">
                 Telephone:
               <input
-                  type="text"
+                  country="US"
                   name="telephone"
                   value={this.props.user.telephone}
                   onChange={this.handleInputChangeFor('telephone')}
@@ -155,17 +158,17 @@ class InfoPage extends Component {
             </div>
           </form>
         </div>
-      )
-    }
+      ) //end of content for edit=true
+    } //end of if-else
 
     return (
       <div>
         <Nav />
         {content}
       </div>
-    );
-  }
-}
+    ); //end of return
+  } //end of render
+} //end of InfoPage class
 
 // this allows us to use <App /> in index.js
 export default connect(mapStateToProps)(InfoPage);

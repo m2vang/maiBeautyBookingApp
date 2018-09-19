@@ -22,6 +22,9 @@ class Nav extends Component {
                 <Link to="/info"> My Profile </Link>
               </li>
               <li>
+                <Link to="/appointments"> My Appointments </Link>
+              </li>
+              <li>
                 <Link to="/bookappt"> Book an Appointment </Link>
               </li>
             </ul>

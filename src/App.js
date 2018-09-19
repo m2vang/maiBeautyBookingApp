@@ -15,6 +15,7 @@ import AdminCalendar from './components/Calendar/Calendar';
 import BookAnAppt from './components/BookAnAppt/BookAnAppt';
 import ListOfClients from './components/ListOfClients/ListOfClients';
 import ErrorPage from './components/ErrorPage/ErrorPage';
+import AppointmentsPage from './components/AppointmentsPage/AppointmentsPage';
 
 import './styles/main.css';
 
@@ -39,6 +40,10 @@ const App = () => (
         <Route
           path="/info"
           component={InfoPage}
+        />
+        <Route
+          path="/appointments"
+          component={AppointmentsPage}
         />
         <Route
           path="/bookappt"

@@ -36,30 +36,53 @@ router.post('/register', (req, res, next) => {
 // this middleware will send a 404 if not successful
 router.post('/login', userStrategy.authenticate('local'), (req, res) => {
   res.sendStatus(200);
-});
+}); //end of POST
 
 // clear all server session information about this user
 router.get('/logout', (req, res) => {
   // Use passport's built-in method to log out the user
   req.logout();
   res.sendStatus(200);
-});
+}); //end of GET
 
-router.put('/register', (req, res, next) => {
+//Handles all updates made by user on their personal info
+router.put('/register', (req, res) => {
   console.log('req:', req.body);
-  
-  const first_name = req.body.first_name;
-  const last_name = req.body.last_name;
-  const telephone = req.body.telephone;
+  if(req.isAuthenticated()) {
+    const first_name = req.body.first_name;
+    const last_name = req.body.last_name;
+    const telephone = req.body.telephone;
 
-  const queryText = `UPDATE "user" SET "first_name" = $1, "last_name" = $2, "telephone" = $3
+    const queryText = `UPDATE "user" SET "first_name" = $1, "last_name" = $2, "telephone" = $3
                       WHERE "id" = $4`;
-  pool.query(queryText, [first_name, last_name, telephone, req.user.id])
-    .then(result => res.sendStatus(200))
+    pool.query(queryText, [first_name, last_name, telephone, req.user.id])
+      .then(() => res.sendStatus(200))
+      .catch(error => {
+        console.log('Error in PUT register route', error);
+        res.sendStatus(500);
+      }); //end of pool.query
+  } else {
+    res.sendStatus(403);
+  }; //end of if-else auth
+}); //end of PUT
+
+//Handles getting user's upcoming appts
+router.get('/reminder', (req, res) => {
+  if(req.isAuthenticated()) {
+    const queryText =  `SELECT "category_types"."category", "service_types"."service_name", "service_types"."duration", "start", "end" 
+                        FROM "calendar" 
+                        JOIN "service_types" ON "calendar"."service_types_id" = "service_types"."id"  
+                        JOIN "category_types" ON "service_types"."category_types_id" = "category_types"."id" 
+                        WHERE "user_id" = 4;`;
+    pool.query(queryText)
+    .then((results) => res.send(results.rows))
     .catch(error => {
-      console.log('Error in PUT route', error);
+      console.log('Error in GET reminder route', error);
       res.sendStatus(500);
-    });
-});
+    }); //end of pool.query
+  } else {
+    res.sendStatus(403);
+  }; //end of if-else auth.
+}); //end of GET 
 
 module.exports = router;
