@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
+import PhoneInput from 'react-phone-number-input';
+import 'react-phone-number-input/style.css';
 class RegisterPage extends Component {
   constructor(props) {
     super(props);
@@ -102,11 +104,12 @@ class RegisterPage extends Component {
           <div>
             <label htmlFor="telephone">
               Telephone:
-              <input
-                type="text"
+              <PhoneInput
+                country="US"
+                placeholder="Enter your phone number"
                 name="telephone"
                 value={this.state.telephone}
-                onChange={this.handleInputChangeFor('telephone')}
+                onChange={ telephone => this.setState({telephone})}
               />
             </label>
           </div>
