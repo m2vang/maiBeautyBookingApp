@@ -1,54 +1,47 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { USER_ACTIONS } from '../../redux/actions/userActions';
+import axios from 'axios';
 //Nav is the navigation bar
 import Nav from '../../components/Nav/Nav';
-
-const mapStateToProps = state => ({
-    user: state.user,
-}); //end of mapStateToProps
+import DisplayReminder from '../DisplayReminder/DisplayReminder';
 
 class AppointmentsPage extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            apptList: [],
+        };
+    } //end of constructor
+
     componentDidMount() {
-        this.props.dispatch({ type: USER_ACTIONS.FETCH_USER });
+        this.getAppointments();
     } //end of componentDidMount
 
-    render() {
-        let content = null;
+    getAppointments () {
+        axios.get('/api/user/reminder/')
+            .then((response) => {
+                console.log('back from DB with:', response.data);
+                this.setState({
+                    apptList: response.data
+                })
+            }).catch((error) => {
+                console.log('Error in getApptReminder', error);
+                // alert('Cannot get appt!');
+            }) //end of axios
+    } //end of getApptReminder()
 
-        if (this.props.user.email) {
-            content = (
-                <div>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Category</th>
-                                <th>Service Type</th>
-                                <th>Duration</th>
-                                <th>Date</th>
-                                <th>Time</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Hair Cut</td>
-                                <td>Women</td>
-                                <td>2 hours</td>
-                                <td>September 20, 2018</td>
-                                <td>9:00 am</td>
-                            </tr>
-                        </tbody>
-                    </table>  
-                </div>
-            ) //end of content
-        } //end of if
+    render() {    
         return (
             <div>
                 <Nav />
-                {content}
+                {this.state.apptList.map((apptsAtIndex, index) => {
+                    return (
+                        <DisplayReminder key={index} appts={apptsAtIndex} />
+                    )
+                })
+                }
             </div>
         ) //end of return
     } //end of render
 } //end of AppointmentsPage class
 
-export default connect(mapStateToProps)(AppointmentsPage);
+export default AppointmentsPage;
