@@ -73,8 +73,8 @@ router.get('/reminder', (req, res) => {
                         FROM "calendar" 
                         JOIN "service_types" ON "calendar"."service_types_id" = "service_types"."id"  
                         JOIN "category_types" ON "service_types"."category_types_id" = "category_types"."id" 
-                        WHERE "user_id" = 4;`;
-    pool.query(queryText)
+                        WHERE "user_id" = $1;`;
+    pool.query(queryText, [req.user.id])
     .then((results) => res.send(results.rows))
     .catch(error => {
       console.log('Error in GET reminder route', error);
