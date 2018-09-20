@@ -3,8 +3,13 @@ import { connect } from 'react-redux';
 import axios from 'axios';
 //Nav is the navigation bar
 import Nav from '../../components/Nav/Nav';
-import DisplayReminder from '../DisplayReminder/DisplayReminder';
-
+import DisplayAppointment from '../DisplayAppointment/DisplayAppointment';
+//Material Table
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
 
 const mapStateToProps = state => ({
     user: state.user,
@@ -14,12 +19,14 @@ class AppointmentsPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            apptList: [],
+            pastApptList: [],
+            upcomingApptList: [],
         };
     } //end of constructor
 
     componentDidMount() {
-        this.getAppointments();
+        this.getPastAppointments();
+        this.getUpcomingAppointments();
     } //end of componentDidMount
 
     componentDidUpdate() {
@@ -28,29 +35,92 @@ class AppointmentsPage extends Component {
         } //end of if
     } //end of componentDidUpdate()
 
-    getAppointments () {
+    getPastAppointments() {
         axios.get('/api/user/reminder/')
             .then((response) => {
                 console.log('back from DB with:', response.data);
                 this.setState({
-                    apptList: response.data
+                    pastApptList: response.data
                 })
             }).catch((error) => {
                 console.log('Error in getApptReminder', error);
                 // alert('Cannot get appt!');
             }) //end of axios
-    } //end of getApptReminder()
+    } //end of getPastApptReminder()
 
-    render() {    
+    getUpcomingAppointments() {
+        axios.get('/api/user/upcomingReminder/')
+            .then((response) => {
+                console.log('back from DB with:', response.data);
+                this.setState({
+                    upcomingApptList: response.data
+                })
+            }).catch((error) => {
+                console.log('Error in getApptReminder', error);
+                // alert('Cannot get appt!');
+            }) //end of axios
+    } //end of getUpcomingApptReminder()
+
+    render() {
+        let upcomingContent = null;
+        let pastContent = null;
+
+        //this will render the client's past appts
+        if (this.props.user.email) {
+            pastContent = (
+                <Table>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>Category</TableCell>
+                            <TableCell>Service Type</TableCell>
+                            <TableCell>Duration</TableCell>
+                            <TableCell>Date</TableCell>
+                            <TableCell>Time</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {this.state.pastApptList.map((apptsAtIndex, index) => {
+                            return (
+                                <DisplayAppointment key={index} appts={apptsAtIndex} />
+                            )
+                        })
+                        }
+                    </TableBody>
+                </Table>
+            ) //end of content
+        } //end of if statement
+
+        //this will render the client's upcoming appts
+        if (this.props.user.email) {
+            upcomingContent = (
+                <Table>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>Category</TableCell>
+                            <TableCell>Service Type</TableCell>
+                            <TableCell>Duration</TableCell>
+                            <TableCell>Date</TableCell>
+                            <TableCell>Time</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {this.state.upcomingApptList.map((apptsAtIndex, index) => {
+                            return (
+                                <DisplayAppointment key={index} appts={apptsAtIndex} />
+                            )
+                        })
+                        }
+                    </TableBody>
+                </Table>
+            ) //end of content
+        } //end of if statement
         return (
             <div>
                 <Nav />
-                {this.state.apptList.map((apptsAtIndex, index) => {
-                    return (
-                        <DisplayReminder key={index} appts={apptsAtIndex} />
-                    )
-                })
-                }
+                <h2>Upcoming Appointments</h2>
+                {upcomingContent}
+                <h2>Past Appointments</h2>
+                {pastContent}
             </div>
         ) //end of return
     } //end of render
