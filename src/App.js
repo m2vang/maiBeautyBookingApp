@@ -9,7 +9,6 @@ import {
 import Header from './components/Header/Header';
 import LoginPage from './components/LoginPage/LoginPage';
 import RegisterPage from './components/RegisterPage/RegisterPage';
-import UserPage from './components/UserPage/UserPage';
 import InfoPage from './components/InfoPage/InfoPage';
 import AdminCalendar from './components/Calendar/Calendar';
 import BookAnAppt from './components/BookAnAppt/BookAnAppt';
@@ -32,10 +31,6 @@ const App = () => (
         <Route
           path="/register"
           component={RegisterPage}
-        />
-        <Route
-          path="/user"
-          component={UserPage}
         />
         <Route
           path="/info"

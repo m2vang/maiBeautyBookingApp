@@ -16,16 +16,13 @@ class Nav extends Component {
           <div>
             <ul>
               <li>
-                <Link to="/user"> Home </Link>
-              </li>
-              <li>
-                <Link to="/info"> My Profile </Link>
-              </li>
-              <li>
                 <Link to="/appointments"> My Appointments </Link>
               </li>
               <li>
                 <Link to="/bookappt"> Book an Appointment </Link>
+              </li>
+              <li>
+                <Link to="/info"> My Profile </Link>
               </li>
             </ul>
           </div>
