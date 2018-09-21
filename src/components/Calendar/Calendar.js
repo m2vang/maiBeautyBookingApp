@@ -64,7 +64,7 @@ class ApptCalendar extends Component {
                     step={30}
                     min={new Date(2018, 7, 2, 7)}
                     max={new Date(2018, 7, 2, 21)}
-                    // onSelectSlot={this.onSelect}
+                // onSelectSlot={this.onSelect}
                 />
             </div>
         );

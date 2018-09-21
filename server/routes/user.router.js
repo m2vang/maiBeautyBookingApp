@@ -104,4 +104,26 @@ router.get('/upcomingReminder', (req, res) => {
   }; //end of if-else auth.
 }); //end of GET 
 
+router.get('/clientList', (req, res) => {
+  if (req.isAuthenticated()) {
+    const queryText = `SELECT "user"."first_name", "user"."last_name", "user"."telephone", "user"."email", 
+                      "category_types"."category", 
+                      "service_types"."service_name", "service_types"."duration", 
+                      "start", "end" FROM "calendar" 
+                      JOIN "user" ON "calendar"."user_id" = "user"."id" 
+                      JOIN "service_types" ON "calendar"."service_types_id" = "service_types"."id"  
+                      JOIN "category_types" ON "service_types"."category_types_id" = "category_types"."id" 
+                      WHERE "cancel_status" = false 
+                      ORDER BY "user"."first_name";`;
+    pool.query(queryText)
+      .then((results) => res.send(results.rows))
+      .catch(error => {
+        console.log('Error in GET clientList route', error);
+        res.sendStatus(500);
+      }); //end of pool.query
+  } else {
+    res.sendStatus(403);
+  }; //end of if-else auth.
+}); //end of GET
+
 module.exports = router;

@@ -27,7 +27,7 @@ class LoginPage extends Component {
 
   componentDidUpdate() {
     if (!this.props.user.isLoading && this.props.user.email !== null) {
-      this.props.history.push('appointments');
+      this.props.history.push('info');
     }
   }
 

@@ -32,7 +32,7 @@ class AppointmentsPage extends Component {
     componentDidUpdate() {
         if (!this.props.user.isLoading && this.props.user.email === null) {
             this.props.history.push('home');
-        } //end of if
+        } //end of if statement
     } //end of componentDidUpdate()
 
     getPastAppointments() {
@@ -44,7 +44,7 @@ class AppointmentsPage extends Component {
                 })
             }).catch((error) => {
                 console.log('Error in getApptReminder', error);
-                // alert('Cannot get appt!');
+                alert('Cannot get past appts!');
             }) //end of axios
     } //end of getPastApptReminder()
 
@@ -57,7 +57,7 @@ class AppointmentsPage extends Component {
                 })
             }).catch((error) => {
                 console.log('Error in getApptReminder', error);
-                // alert('Cannot get appt!');
+                alert('Cannot get upcoming appts!');
             }) //end of axios
     } //end of getUpcomingApptReminder()
 
@@ -118,9 +118,9 @@ class AppointmentsPage extends Component {
             <div>
                 <Nav />
                 <h2>Upcoming Appointments</h2>
-                {upcomingContent}
+                { upcomingContent }
                 <h2>Past Appointments</h2>
-                {pastContent}
+                { pastContent }
             </div>
         ) //end of return
     } //end of render
