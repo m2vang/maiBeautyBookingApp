@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import DisplayClientAppt from '../DisplayClientAppt/DisplayClientAppt.js';
+import DisplayPastClientAppt from '../DisplayPastClientAppt/DisplayPastClientAppt.js';
 //Styling
 import '../DisplayClient/DisplayClient.css';
 //Import Material Expansion Table
@@ -23,12 +24,14 @@ class DisplayClient extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            clientAppts: [],
+            upcomingClientAppts: [],
+            pastClientAppts: [],
         };
     } //end of constructor
 
     componentDidMount() {
         this.getClientAppt();
+        this.getClientPastAppt();
     } //end of componentDidMount
 
     getClientAppt() {
@@ -37,11 +40,25 @@ class DisplayClient extends Component {
             .then((response) => {
                 console.log('back from DB with:', response.data);
                 this.setState({
-                    clientAppts: response.data
+                    upcomingClientAppts: response.data
                 })
             }).catch((error) => {
                 console.log('Error in getClientAppt', error);
                 alert('Cannot get client appts!');
+            }) //end of axios
+    } //end of getClients()
+
+    getClientPastAppt() {
+        console.log(this.props.clientName.id)
+        axios.get(`/api/user/clientPastAppt?user=${this.props.clientName.id}`)
+            .then((response) => {
+                console.log('back from DB with:', response.data);
+                this.setState({
+                    pastClientAppts: response.data
+                })
+            }).catch((error) => {
+                console.log('Error in getClientPastAppt', error);
+                alert('Cannot get client past appts!');
             }) //end of axios
     } //end of getClients()
 
@@ -69,26 +86,54 @@ class DisplayClient extends Component {
                         </div>
                     </ExpansionPanelDetails>
                     <ExpansionPanelDetails className={PropTypes.details}>
-                        <div>
-                            <Typography>Appointments:</Typography>
-                        </div>
-                        <Table>
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell>Date</TableCell>
-                                    <TableCell>Start</TableCell>
-                                    <TableCell>End</TableCell>
-                                    <TableCell>Actions</TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {this.state.clientAppts.map((apptsAtIndex, index) => {
-                                    return (
-                                        <DisplayClientAppt key={index} clientAppt={apptsAtIndex} />
-                                    )
-                                })}
-                            </TableBody>
-                        </Table>
+                        <ExpansionPanel>
+                            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                                Upcoming Appointments:
+                                </ExpansionPanelSummary>
+                            <ExpansionPanelDetails className="details">
+                                <Table>
+                                    <TableHead>
+                                        <TableRow>
+                                            <TableCell>Date</TableCell>
+                                            <TableCell>Start</TableCell>
+                                            <TableCell>End</TableCell>
+                                            <TableCell>Actions</TableCell>
+                                        </TableRow>
+                                    </TableHead>
+                                    <TableBody>
+                                        {this.state.upcomingClientAppts.map((apptsAtIndex, index) => {
+                                            return (
+                                                <DisplayClientAppt key={index} clientAppt={apptsAtIndex} />
+                                            )
+                                        })}
+                                    </TableBody>
+                                </Table>
+                            </ExpansionPanelDetails>
+                        </ExpansionPanel>
+                        <ExpansionPanel>
+                            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                                Past Appointments:
+                                </ExpansionPanelSummary>
+                            <ExpansionPanelDetails className="details">
+                                <Table>
+                                    <TableHead>
+                                        <TableRow>
+                                            <TableCell>Date</TableCell>
+                                            <TableCell>Start</TableCell>
+                                            <TableCell>End</TableCell>
+                                            <TableCell>Actions</TableCell>
+                                        </TableRow>
+                                    </TableHead>
+                                    <TableBody>
+                                        {this.state.pastClientAppts.map((pastApptsAtIndex, index) => {
+                                            return (
+                                                <DisplayPastClientAppt key={index} clientPastAppt={pastApptsAtIndex} />
+                                            )
+                                        })}
+                                    </TableBody>
+                                </Table>
+                            </ExpansionPanelDetails>
+                        </ExpansionPanel>
                     </ExpansionPanelDetails>
                 </ExpansionPanel>
                 <Divider />

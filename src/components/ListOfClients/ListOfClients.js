@@ -62,6 +62,7 @@ class ListOfClients extends Component {
         return (
             <div>
                 <Nav />
+                <h1>Clients</h1>
                 {clientContent}
             </div>
         ); //end of return

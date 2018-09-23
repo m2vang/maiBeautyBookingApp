@@ -125,18 +125,39 @@ router.get(`/clientAppt`, (req, res) => {
   if (req.isAuthenticated()) {
     const user = req.query.user;
     console.log('user', user);
-    
     const queryText = `SELECT "category_types"."category", 
                       "service_types"."service_name", "service_types"."duration", 
                       "start", "end" FROM "calendar" 
                       JOIN "user" ON "calendar"."user_id" = "user"."id" 
                       JOIN "service_types" ON "calendar"."service_types_id" = "service_types"."id"  
                       JOIN "category_types" ON "service_types"."category_types_id" = "category_types"."id" 
-                      WHERE "user_id" = $1;`;
+                      WHERE "user_id" = $1 and "cancel_status" = false and ("end" >= CURRENT_DATE);`;
     pool.query(queryText,[user])
       .then((results) => res.send(results.rows))
       .catch(error => {
         console.log('Error in GET clientAppt route', error);
+        res.sendStatus(500);
+      }); //end of pool.query
+  } else {
+    res.sendStatus(403);
+  }; //end of if-else auth.
+}); //end of GET
+
+router.get(`/clientPastAppt`, (req, res) => {
+  if (req.isAuthenticated()) {
+    const user = req.query.user;
+    console.log('user', user);
+    const queryText = `SELECT "category_types"."category", 
+                      "service_types"."service_name", "service_types"."duration", 
+                      "start", "end" FROM "calendar" 
+                      JOIN "user" ON "calendar"."user_id" = "user"."id" 
+                      JOIN "service_types" ON "calendar"."service_types_id" = "service_types"."id"  
+                      JOIN "category_types" ON "service_types"."category_types_id" = "category_types"."id" 
+                      WHERE "user_id" = $1 and "cancel_status" = false and ("end" <= CURRENT_DATE);`;
+    pool.query(queryText, [user])
+      .then((results) => res.send(results.rows))
+      .catch(error => {
+        console.log('Error in GET clientPastAppt route', error);
         res.sendStatus(500);
       }); //end of pool.query
   } else {
