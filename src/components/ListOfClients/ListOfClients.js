@@ -14,13 +14,13 @@ class ListOfClients extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            clientList: [],
+            clientName: [],
         };
     } //end of constructor
 
     componentDidMount() {
         this.props.dispatch({ type: USER_ACTIONS.FETCH_USER });
-        this.getClients();
+        this.getClientName();
     } //end of componentDidMount
 
     componentDidUpdate() {
@@ -29,16 +29,16 @@ class ListOfClients extends Component {
         } //end of if statement
     } //end of componentDidUpdate
 
-    getClients() {
-        axios.get('/api/user/clientList/')
+    getClientName() {
+        axios.get('/api/user/clientName/')
             .then((response) => {
                 console.log('back from DB with:', response.data);
                 this.setState({
-                    clientList: response.data
+                    clientName: response.data
                 })
             }).catch((error) => {
-                console.log('Error in getClients', error);
-                alert('Cannot get appt!');
+                console.log('Error in getClientName', error);
+                alert('Cannot get client names!');
             }) //end of axios
     } //end of getClients()
 
@@ -49,9 +49,9 @@ class ListOfClients extends Component {
         if (this.props.user.if_stylist === true) {
             clientContent = (
                 <div>
-                    {this.state.clientList.map((clientsAtIndex, index) => {
+                    {this.state.clientName.map((clientsAtIndex, index) => {
                         return (
-                            <DisplayClient key={index} client={clientsAtIndex} />
+                            <DisplayClient key={index} clientName={clientsAtIndex} />
                         )
                     })
                     }
