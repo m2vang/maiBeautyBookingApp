@@ -16,9 +16,6 @@ class Nav extends Component {
           <div>
             <ul>
               <li>
-                <Link to="/user"> Home </Link>
-              </li>
-              <li>
                 <Link to="/info"> My Profile </Link>
               </li>
               <li>

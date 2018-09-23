@@ -1,0 +1,14 @@
+
+.details {
+  border-bottom: solid;
+  border-bottom-width: .2px;
+}
+
+.column {
+  font-weight: bold;
+  width: 100%;
+}
+
+.title {
+  text-decoration: underline;
+}
