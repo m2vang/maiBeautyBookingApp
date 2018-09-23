@@ -85,7 +85,6 @@ class DisplayClient extends Component {
                             <Typography>{this.props.clientName.email}</Typography>
                         </div>
                     </ExpansionPanelDetails>
-                    <ExpansionPanelDetails className={PropTypes.details}>
                         <ExpansionPanel>
                             <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
                                 Upcoming Appointments:
@@ -121,7 +120,6 @@ class DisplayClient extends Component {
                                             <TableCell>Date</TableCell>
                                             <TableCell>Start</TableCell>
                                             <TableCell>End</TableCell>
-                                            <TableCell>Actions</TableCell>
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
@@ -134,7 +132,14 @@ class DisplayClient extends Component {
                                 </Table>
                             </ExpansionPanelDetails>
                         </ExpansionPanel>
-                    </ExpansionPanelDetails>
+                        <ExpansionPanel>
+                            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                                Notes:
+                            </ExpansionPanelSummary>
+                            <ExpansionPanelDetails className="details">
+                                
+                            </ExpansionPanelDetails>
+                        </ExpansionPanel>
                 </ExpansionPanel>
                 <Divider />
             </div>
