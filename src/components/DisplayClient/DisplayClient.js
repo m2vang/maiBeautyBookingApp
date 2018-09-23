@@ -20,6 +20,9 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 
+import TextField from '@material-ui/core/TextField';
+
+
 class DisplayClient extends Component {
     constructor(props) {
         super(props);
@@ -137,7 +140,19 @@ class DisplayClient extends Component {
                                 Notes:
                             </ExpansionPanelSummary>
                             <ExpansionPanelDetails className="details">
-                                
+                            <TextField
+                                id="outlined-full-width"
+                                label="Notes"
+                                style={{ margin: 8 }}
+                                placeholder=""
+                                fullWidth
+                                margin="normal"
+                                variant="outlined"
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                            />
+                            <button>Add</button>
                             </ExpansionPanelDetails>
                         </ExpansionPanel>
                 </ExpansionPanel>
