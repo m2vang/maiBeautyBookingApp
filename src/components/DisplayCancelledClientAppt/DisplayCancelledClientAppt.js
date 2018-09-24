@@ -1,13 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
-
 const moment = require('moment');
 
 class DisplayCancelledClientAppt extends Component {
-
 
     render() {
         return (

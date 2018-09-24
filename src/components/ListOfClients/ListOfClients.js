@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
+import '../ListOfClients/ListOfClients.css';
 import DisplayClient from '../DisplayClient/DisplayClient.js';
 //Nav is the navigation bar
 import Nav from '../../components/Nav/Nav';
 import { USER_ACTIONS } from '../../redux/actions/userActions';
+import SearchIcon from '@material-ui/icons/Search';
+import Input from '@material-ui/core/Input';
+
 
 const mapStateToProps = state => ({
     user: state.user,
@@ -57,11 +61,19 @@ class ListOfClients extends Component {
                 </div>
             ) //end of clientContent
         } //end of if statement
-
         return (
             <div>
                 <Nav />
-                <h1>Clients</h1>
+                <div className="header">
+                    <span className="name">Clients</span>
+                    <div className="search">
+                        <SearchIcon />
+                        <Input
+                            placeholder="Search..."
+                            disableUnderline
+                        />
+                    </div>
+                </div>
                 {clientContent}
             </div>
         ); //end of return
