@@ -45,7 +45,6 @@ class DisplayClient extends Component {
     } //end of componentDidMount
 
     getClientAppt() {
-        console.log(this.props.clientName.id)
         axios.get(`/api/user/adminClientAppt?user=${this.props.clientName.id}`)
             .then((response) => {
                 console.log('appts:', response.data);
@@ -59,7 +58,6 @@ class DisplayClient extends Component {
     } //end of getClientAppt()
 
     getClientPastAppt() {
-        console.log(this.props.clientName.id)
         axios.get(`/api/user/adminClientPastAppt?user=${this.props.clientName.id}`)
             .then((response) => {
                 console.log('pastAppts:', response.data);
@@ -73,7 +71,6 @@ class DisplayClient extends Component {
     } //end of getClientPastAppt()
 
     getClientNotes() {
-        console.log(this.props.clientName.id)
         axios.get(`/api/user/clientNotes?user=${this.props.clientName.id}`)
             .then((response) => {
                 console.log('notes', response.data);
@@ -97,7 +94,6 @@ class DisplayClient extends Component {
     } //end of handleChange
 
     addNote = (id) => {
-        console.log('in addNote', id);
         axios({
             method: 'POST',
             url: '/api/user/newClientNote/' + id,
@@ -108,10 +104,12 @@ class DisplayClient extends Component {
             console.log('error in addNote', error);
             alert('Unable to add new note!');
         });//end of axios
+
+        //empty input field
+        this.state.newNote = '';
     } //end of addNote
 
     removeNote = (id) => {
-        console.log('in removeNote', id);
         axios.delete('/api/user/clientNotes/' + id)
             .then((response) => {
                 this.getClientNotes();
