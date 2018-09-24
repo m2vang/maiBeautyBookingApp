@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import axios from 'axios';
 import DisplayClientAppt from '../DisplayClientAppt/DisplayClientAppt.js';
 import DisplayPastClientAppt from '../DisplayPastClientAppt/DisplayPastClientAppt.js';
-import DisplayClientNotes from '../DisplayClientNotes/DisplayClientNotes.js';
 //Styling
 import '../DisplayClient/DisplayClient.css';
 //Import Material Expansion Table
@@ -21,6 +20,12 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 
 import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+import DeleteIcon from '@material-ui/icons/Delete';
+
+const mapStateToProps = state => ({
+    notes: state.notes,
+});
 
 class DisplayClient extends Component {
     constructor(props) {
@@ -28,10 +33,8 @@ class DisplayClient extends Component {
         this.state = {
             upcomingClientAppts: [],
             pastClientAppts: [],
-            clientNotes: [],
         };
     } //end of constructor
-
     componentDidMount() {
         this.getClientAppt();
         this.getClientPastAppt();
@@ -40,7 +43,7 @@ class DisplayClient extends Component {
 
     getClientAppt() {
         console.log(this.props.clientName.id)
-        axios.get(`/api/user/clientAppt?user=${this.props.clientName.id}`)
+        axios.get(`/api/user/adminClientAppt?user=${this.props.clientName.id}`)
             .then((response) => {
                 console.log('appts:', response.data);
                 this.setState({
@@ -54,7 +57,7 @@ class DisplayClient extends Component {
 
     getClientPastAppt() {
         console.log(this.props.clientName.id)
-        axios.get(`/api/user/clientPastAppt?user=${this.props.clientName.id}`)
+        axios.get(`/api/user/adminClientPastAppt?user=${this.props.clientName.id}`)
             .then((response) => {
                 console.log('pastAppts:', response.data);
                 this.setState({
@@ -70,15 +73,27 @@ class DisplayClient extends Component {
         console.log(this.props.clientName.id)
         axios.get(`/api/user/clientNotes?user=${this.props.clientName.id}`)
             .then((response) => {
-                console.log('notes:', response.data);
-                this.setState({
-                    clientNotes: response.data
-                })
+                const action = {type: 'FETCH_ADMIN_CLIENT_NOTES', payload:response.data};
+                this.props.dispatch(action);
             }).catch((error) => {
                 console.log('Error in getClientNotes', error);
                 alert('Cannot get client notes!');
             }) //end of axios
     } //end of getClientNotes()
+
+    removeNote = () => {
+        const id = this.props.notes.id;
+        console.log('in removeNote', id);
+        axios({
+            method: 'DELETE',
+            url: '/api/user/clientNotes/' + id
+        }).then((response) => {
+            this.getClientNotes();
+        }).catch((error) => {
+            alert('Unable to delete feedback!');
+            console.log('Error in remove', error);
+        })
+    }
 
     render() {
         return (
@@ -120,7 +135,7 @@ class DisplayClient extends Component {
                                 <TableBody>
                                     {this.state.upcomingClientAppts.map((apptsAtIndex, index) => {
                                         return (
-                                            <DisplayClientAppt key={index} clientAppt={apptsAtIndex} />
+                                            <DisplayClientAppt key={index} clientAppt={apptsAtIndex}/>
                                         )
                                     })}
                                 </TableBody>
@@ -163,10 +178,13 @@ class DisplayClient extends Component {
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {this.state.clientNotes.map((notesAtIndex, index) => {
+                                    {this.props.notes.clientNotes.map((notes) => {
                                         return (
-                                            <DisplayClientNotes key={index} notes={notesAtIndex} />
-                                        )
+                                            <TableRow key={notes.id}>
+                                                <TableCell>{notes.notes}</TableCell>
+                                                <TableCell><Button color="secondary" onClick={this.removeNote}>Delete<DeleteIcon /></Button></TableCell>
+                                            </TableRow>
+                                        );
                                     })}
                                 </TableBody>
                             </Table>
@@ -194,4 +212,4 @@ class DisplayClient extends Component {
     } //end of render
 } //end of DisplayClient
 
-export default connect()(DisplayClient);
+export default connect(mapStateToProps)(DisplayClient);

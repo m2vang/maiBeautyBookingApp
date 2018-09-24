@@ -10,7 +10,6 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-
 const mapStateToProps = state => ({
     user: state.user,
 }); // end of mapStateToProps
@@ -36,7 +35,7 @@ class AppointmentsPage extends Component {
     } //end of componentDidUpdate()
 
     getPastAppointments() {
-        axios.get('/api/user/reminder/')
+        axios.get('/api/user/clientPastAppt/')
             .then((response) => {
                 console.log('back from DB with:', response.data);
                 this.setState({
