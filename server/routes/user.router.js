@@ -202,9 +202,10 @@ router.post('/newClientNote/:id', (req, res) => {
   console.log('in POST route', req.params.id);
   if (req.isAuthenticated()) {
     const idWithNote = req.params.id;
-    const noteToAdd = req.body;
-    const addNoteQuery = `INSERT INTO "notes" ("notes", "user_id") VALUES ($1, $2);`;
-    pool.query(addNoteQuery, [noteToAdd.notes, idWithNote])
+    const noteToAdd = req.body.notes;
+    const noteDate = req.body.date;
+    const addNoteQuery = `INSERT INTO "notes" ("date", "notes", "user_id") VALUES ($1, $2, $3);`;
+    pool.query(addNoteQuery, [noteDate, noteToAdd, idWithNote])
       .then((results) => {
         res.send(results.rows);
       }).catch((error) => {
@@ -220,8 +221,9 @@ router.put('/cancelAppt/:id', (req, res) => {
   console.log('in PUT appt route', req.params.id);
   if (req.isAuthenticated()) {
     const idToCancel = req.params.id;
-    const cancelApptQuery = `UPDATE "calendar" SET "cancel_status" = 'true' WHERE "id" = $1;`;
-    pool.query(cancelApptQuery, [idToCancel])
+    const newDate = req.body.date;
+    const cancelApptQuery = `UPDATE "calendar" SET "cancel_status" = 'true', "cancel_date" = $1 WHERE "id" = $2;`;
+    pool.query(cancelApptQuery, [newDate, idToCancel])
       .then((results) => {
         res.sendStatus(200);
       }).catch((error) => {
@@ -232,5 +234,28 @@ router.put('/cancelAppt/:id', (req, res) => {
     res.sendStatus(403);
   }; //end of if-else auth
 }); //end of PUT
+
+router.get(`/adminCancelledClientAppt`, (req, res) => {
+  if (req.isAuthenticated()) {
+    const user = req.query.user;
+    console.log('user', user);
+    const clientApptQuery = `SELECT "calendar"."id", "calendar"."cancel_date",
+                      "category_types"."category", 
+                      "service_types"."service_name", "service_types"."duration", 
+                      "start", "end" FROM "calendar" 
+                      JOIN "user" ON "calendar"."user_id" = "user"."id" 
+                      JOIN "service_types" ON "calendar"."service_types_id" = "service_types"."id"  
+                      JOIN "category_types" ON "service_types"."category_types_id" = "category_types"."id" 
+                      WHERE "user_id" = $1 and "cancel_status" = 'true';`;
+    pool.query(clientApptQuery, [user])
+      .then((results) => res.send(results.rows))
+      .catch(error => {
+        console.log('Error in GET clientAppt route', error);
+        res.sendStatus(500);
+      }); //end of pool.query
+  } else {
+    res.sendStatus(403);
+  }; //end of if-else auth.
+}); //end of GET
 
 module.exports = router;

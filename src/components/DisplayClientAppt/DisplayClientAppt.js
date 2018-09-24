@@ -12,14 +12,16 @@ const moment = require('moment');
 class DisplayClientAppt extends Component {
 
     cancelAppt = (id) => {
-        console.log('in cancelAppt', id);
-        axios.put('/api/user/cancelAppt/' + id)
-            .then((response) => {
-                this.props.getClients(id);
-            }).catch((error) => {
-                console.log('error in cancelAppt', error);
-                
-            })
+        let date = new Date();
+        axios({
+            method: 'PUT',
+            url: '/api/user/cancelAppt/' + id,
+            data: {date: date}
+        }).then((response) => {
+            this.props.getClients(id);
+        }).catch((error) => {
+            console.log('error in cancelAppt', error);
+        });
     } //end of cancelAppt
 
     render() {
@@ -29,7 +31,7 @@ class DisplayClientAppt extends Component {
                 <TableCell>{moment(this.props.clientAppt.start).format("MMM D YYYY")}</TableCell>
                 <TableCell>{moment(this.props.clientAppt.start).format("hh:mm a")}</TableCell>
                 <TableCell>{moment(this.props.clientAppt.end).format("hh:mm a")}</TableCell>
-                <TableCell><Button size="small" onClick={this.editAppt}>Edit</Button><Button size="small" color="secondary" onClick={()=>this.cancelAppt(this.props.clientAppt.id)}>Cancel</Button></TableCell>
+                <TableCell><Button size="small" onClick={this.editAppt}>Edit</Button><Button size="small" color="secondary" onClick={() => this.cancelAppt(this.props.clientAppt.id)}>Cancel</Button></TableCell>
             </TableRow>
         ) //end of return
     } //end of render

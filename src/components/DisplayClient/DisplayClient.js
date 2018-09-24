@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import axios from 'axios';
 import DisplayClientAppt from '../DisplayClientAppt/DisplayClientAppt.js';
 import DisplayPastClientAppt from '../DisplayPastClientAppt/DisplayPastClientAppt.js';
+import DisplayCancelledClientAppt from '../DisplayCancelledClientAppt/DisplayCancelledClientAppt.js';
 //Styling
 import '../DisplayClient/DisplayClient.css';
 //Import Material Expansion Table
@@ -22,6 +23,7 @@ import TableRow from '@material-ui/core/TableRow';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import DeleteIcon from '@material-ui/icons/Delete';
+const moment = require('moment');
 
 const mapStateToProps = state => ({
     notes: state.notes,
@@ -33,6 +35,7 @@ class DisplayClient extends Component {
         this.state = {
             upcomingClientAppts: [],
             pastClientAppts: [],
+            cancelledClientAppts: [],
             clientNotes: [],
             newNote: '',
         };
@@ -41,16 +44,17 @@ class DisplayClient extends Component {
     componentDidMount() {
         this.getClientAppt();
         this.getClientPastAppt();
+        this.getCancelledClientAppt();
         this.getClientNotes();
     } //end of componentDidMount
 
     getClientAppt() {
         axios.get(`/api/user/adminClientAppt?user=${this.props.clientName.id}`)
             .then((response) => {
-                console.log('IN Appts', response.data);
                 this.setState({
                     upcomingClientAppts: response.data
                 })
+                this.getCancelledClientAppt();
             }).catch((error) => {
                 console.log('Error in getClientAppt', error);
                 alert('Cannot get client appts!');
@@ -68,6 +72,18 @@ class DisplayClient extends Component {
                 alert('Cannot get client past appts!');
             }); //end of axios
     } //end of getClientPastAppt()
+
+    getCancelledClientAppt() {
+        axios.get(`/api/user/adminCancelledClientAppt?user=${this.props.clientName.id}`)
+            .then((response) => {
+                this.setState({
+                    cancelledClientAppts: response.data
+                })
+            }).catch((error) => {
+                console.log('Error in getCancelledClientAppt', error);
+                alert('Cannot get cancelled client appts!');
+            }); //end of axios
+    } //end of getClientAppt()
 
     getClientNotes() {
         axios.get(`/api/user/clientNotes?user=${this.props.clientName.id}`)
@@ -89,10 +105,11 @@ class DisplayClient extends Component {
     } //end of handleChange
 
     addNote = (id) => {
+        let date = new Date();
         axios({
             method: 'POST',
             url: '/api/user/newClientNote/' + id,
-            data: { notes: this.state.newNote }
+            data: { notes: this.state.newNote, date: date }
         }).then((response) => {
             this.getClientNotes();
         }).catch((error) => {
@@ -188,12 +205,38 @@ class DisplayClient extends Component {
                     </ExpansionPanel>
                     <ExpansionPanel>
                         <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                            Cancelled Appointments:
+                                </ExpansionPanelSummary>
+                        <ExpansionPanelDetails className="details">
+                            <Table>
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell>Cancelled On</TableCell>
+                                        <TableCell>Service</TableCell>
+                                        <TableCell>Appointment Date</TableCell>
+                                        <TableCell>Start</TableCell>
+                                        <TableCell>End</TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {this.state.cancelledClientAppts.map((cancelledApptsAtIndex, index) => {
+                                        return (
+                                            <DisplayCancelledClientAppt key={index} clientCancelAppt={cancelledApptsAtIndex} />
+                                        )
+                                    })}
+                                </TableBody>
+                            </Table>
+                        </ExpansionPanelDetails>
+                    </ExpansionPanel>
+                    <ExpansionPanel>
+                        <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
                             Notes:
                             </ExpansionPanelSummary>
                         <ExpansionPanelDetails className="details">
                             <Table>
                                 <TableHead>
                                     <TableRow>
+                                        <TableCell>Date</TableCell>
                                         <TableCell>Notes</TableCell>
                                         <TableCell>Action</TableCell>
                                     </TableRow>
@@ -202,6 +245,7 @@ class DisplayClient extends Component {
                                     {this.state.clientNotes.map((notesAtIndex, index) => {
                                         return (
                                             <TableRow key={index}>
+                                                <TableCell>{moment(notesAtIndex.date).format('MMM D YYYY')}</TableCell>
                                                 <TableCell>{notesAtIndex.notes}</TableCell>
                                                 <TableCell>
                                                     <Button color="secondary" onClick={() => this.removeNote(notesAtIndex.id)}>
