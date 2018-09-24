@@ -17,7 +17,7 @@ router.get('/', rejectUnauthenticated, (req, res) => {
 // is that the password gets encrypted before being inserted
 router.post('/register', (req, res, next) => {
   console.log('req: ', req.body);
-  
+
   const first_name = req.body.first_name;
   const last_name = req.body.last_name;
   const telephone = req.body.telephone;
@@ -48,7 +48,7 @@ router.get('/logout', (req, res) => {
 //Handles all updates made by user on their personal info
 router.put('/registerUpdate', (req, res) => {
   console.log('req:', req.body);
-  if(req.isAuthenticated()) {
+  if (req.isAuthenticated()) {
     const first_name = req.body.first_name;
     const last_name = req.body.last_name;
     const telephone = req.body.telephone;
@@ -67,18 +67,18 @@ router.put('/registerUpdate', (req, res) => {
 
 //Handles getting user's past appts
 router.get('/clientPastAppt', (req, res) => {
-  if(req.isAuthenticated()) {
-    const pastApptQuery =  `SELECT "category_types"."category", "service_types"."service_name", "service_types"."duration", "start", "end" 
+  if (req.isAuthenticated()) {
+    const pastApptQuery = `SELECT "category_types"."category", "service_types"."service_name", "service_types"."duration", "start", "end" 
                         FROM "calendar" 
                         JOIN "service_types" ON "calendar"."service_types_id" = "service_types"."id"  
                         JOIN "category_types" ON "service_types"."category_types_id" = "category_types"."id" 
                         WHERE "user_id" = $1 and "cancel_status" = false and ("end" <= CURRENT_DATE);`;
     pool.query(pastApptQuery, [req.user.id])
-    .then((results) => res.send(results.rows))
-    .catch(error => {
-      console.log('Error in GET reminder route', error);
-      res.sendStatus(500);
-    }); //end of pool.query
+      .then((results) => res.send(results.rows))
+      .catch(error => {
+        console.log('Error in GET reminder route', error);
+        res.sendStatus(500);
+      }); //end of pool.query
   } else {
     res.sendStatus(403);
   }; //end of if-else auth.
@@ -105,11 +105,11 @@ router.get('/upcomingReminder', (req, res) => {
 
 router.get('/clientName', (req, res) => {
   if (req.isAuthenticated()) {
-    const queryText = `SELECT "id", "first_name", "last_name", "telephone", "email" 
+    const clientNameQuery = `SELECT "id", "first_name", "last_name", "telephone", "email" 
                         FROM "user" 
                         WHERE "if_stylist" = false 
                         ORDER BY "first_name";`;
-    pool.query(queryText)
+    pool.query(clientNameQuery)
       .then((results) => res.send(results.rows))
       .catch(error => {
         console.log('Error in GET clientName route', error);
@@ -124,14 +124,14 @@ router.get(`/adminClientAppt`, (req, res) => {
   if (req.isAuthenticated()) {
     const user = req.query.user;
     console.log('user', user);
-    const queryText = `SELECT "category_types"."category", 
+    const clientApptQuery = `SELECT "category_types"."category", 
                       "service_types"."service_name", "service_types"."duration", 
                       "start", "end" FROM "calendar" 
                       JOIN "user" ON "calendar"."user_id" = "user"."id" 
                       JOIN "service_types" ON "calendar"."service_types_id" = "service_types"."id"  
                       JOIN "category_types" ON "service_types"."category_types_id" = "category_types"."id" 
                       WHERE "user_id" = $1 and "cancel_status" = false and ("end" >= CURRENT_DATE);`;
-    pool.query(queryText,[user])
+    pool.query(clientApptQuery, [user])
       .then((results) => res.send(results.rows))
       .catch(error => {
         console.log('Error in GET clientAppt route', error);
@@ -146,14 +146,14 @@ router.get(`/adminClientPastAppt`, (req, res) => {
   if (req.isAuthenticated()) {
     const user = req.query.user;
     console.log('user', user);
-    const queryText = `SELECT "category_types"."category", 
+    const clientPastApptQuery = `SELECT "category_types"."category", 
                       "service_types"."service_name", "service_types"."duration", 
                       "start", "end" FROM "calendar" 
                       JOIN "user" ON "calendar"."user_id" = "user"."id" 
                       JOIN "service_types" ON "calendar"."service_types_id" = "service_types"."id"  
                       JOIN "category_types" ON "service_types"."category_types_id" = "category_types"."id" 
                       WHERE "user_id" = $1 and "cancel_status" = false and ("end" <= CURRENT_DATE);`;
-    pool.query(queryText, [user])
+    pool.query(clientPastApptQuery, [user])
       .then((results) => res.send(results.rows))
       .catch(error => {
         console.log('Error in GET clientPastAppt route', error);
@@ -168,9 +168,9 @@ router.get(`/clientNotes`, (req, res) => {
   if (req.isAuthenticated()) {
     const user = req.query.user;
     console.log('user', user);
-    const queryText = `SELECT * FROM "notes" 
+    const clientNotesQuery = `SELECT * FROM "notes" 
                       WHERE "user_id" = $1`;
-    pool.query(queryText, [user])
+    pool.query(clientNotesQuery, [user])
       .then((results) => res.send(results.rows))
       .catch(error => {
         console.log('Error in GET clientNotes route', error);
@@ -183,15 +183,36 @@ router.get(`/clientNotes`, (req, res) => {
 
 router.delete('/clientNotes/:id', (req, res) => {
   console.log('in DELETE route', req.params.id);
-  const idToDelete = req.params.id;
-  const query = `DELETE FROM "notes" WHERE "id" = $1;`;
-  pool.query(query, [idToDelete])
-    .then((results) => {
-      res.sendStatus(200);
-    }).catch((error) => {
-      console.log('error in DELETE route');
-      res.sendStatus(500);
-    });
+  if (req.isAuthenticated()) {
+    const idToDelete = req.params.id;
+    const deleteNoteQuery = `DELETE FROM "notes" WHERE "id" = $1;`;
+    pool.query(deleteNoteQuery, [idToDelete])
+      .then((results) => {
+        res.sendStatus(200);
+      }).catch((error) => {
+        console.log('error in DELETE route', error);
+        res.sendStatus(500);
+      });
+  } else {
+    res.sendStatus(403);
+  }; //end of if-else auth
 }); //end of DELETE
+
+router.post('/newClientNote', (req, res) => {
+  if (req.isAuthenticated()) {
+    const idWithNote = req.params.id;
+    const noteToAdd = req.body;
+    const addNoteQuery = `INSERT INTO "notes" ("notes", "user_id") VALUES ($1, $2);`;
+    pool.query(addNoteQuery, [noteToAdd.notes, idWithNote])
+      .then((results) => {
+        res.send(results.rows);
+      }).catch((error) => {
+        console.log('error in POST route', error);
+        res.sendStatus(500);
+      });
+  } else {
+    res.sendStatus(403);
+  }; //end of if-else auth
+}); //end of POST
 
 module.exports = router;

@@ -33,8 +33,10 @@ class DisplayClient extends Component {
         this.state = {
             upcomingClientAppts: [],
             pastClientAppts: [],
+            clientNotes: [],
         };
     } //end of constructor
+
     componentDidMount() {
         this.getClientAppt();
         this.getClientPastAppt();
@@ -52,7 +54,7 @@ class DisplayClient extends Component {
             }).catch((error) => {
                 console.log('Error in getClientAppt', error);
                 alert('Cannot get client appts!');
-            }) //end of axios
+            }); //end of axios
     } //end of getClientAppt()
 
     getClientPastAppt() {
@@ -66,34 +68,46 @@ class DisplayClient extends Component {
             }).catch((error) => {
                 console.log('Error in getClientPastAppt', error);
                 alert('Cannot get client past appts!');
-            }) //end of axios
+            }); //end of axios
     } //end of getClientPastAppt()
 
     getClientNotes() {
         console.log(this.props.clientName.id)
         axios.get(`/api/user/clientNotes?user=${this.props.clientName.id}`)
             .then((response) => {
-                const action = {type: 'FETCH_ADMIN_CLIENT_NOTES', payload:response.data};
-                this.props.dispatch(action);
+                console.log('notes', response.data);
+
+                this.setState({
+                    clientNotes: response.data
+                })
             }).catch((error) => {
                 console.log('Error in getClientNotes', error);
                 alert('Cannot get client notes!');
-            }) //end of axios
+            }); //end of axios
     } //end of getClientNotes()
 
-    removeNote = () => {
-        const id = this.props.notes.id;
+    addNote = () => {
+        const id = this.props.clientName.id
+        axios.post('/api/user/newClientNote' + id)
+            .then((response) => {
+                this.getClientNotes();
+            }).catch((error) => {
+                console.log('error in addNote', error);
+                alert('Unable to add new note!');
+            }); //end of axios
+    } //end of addNote
+
+
+    removeNote = (id) => {
         console.log('in removeNote', id);
-        axios({
-            method: 'DELETE',
-            url: '/api/user/clientNotes/' + id
-        }).then((response) => {
-            this.getClientNotes();
-        }).catch((error) => {
-            alert('Unable to delete feedback!');
-            console.log('Error in remove', error);
-        })
-    }
+        axios.delete('/api/user/clientNotes/' + id)
+            .then((response) => {
+                this.getClientNotes();
+            }).catch((error) => {
+                alert('Unable to delete note!');
+                console.log('Error in remove', error);
+            }); //end of axios
+    } //end of removeNote
 
     render() {
         return (
@@ -135,7 +149,7 @@ class DisplayClient extends Component {
                                 <TableBody>
                                     {this.state.upcomingClientAppts.map((apptsAtIndex, index) => {
                                         return (
-                                            <DisplayClientAppt key={index} clientAppt={apptsAtIndex}/>
+                                            <DisplayClientAppt key={index} clientAppt={apptsAtIndex} />
                                         )
                                     })}
                                 </TableBody>
@@ -178,11 +192,11 @@ class DisplayClient extends Component {
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {this.props.notes.clientNotes.map((notes) => {
+                                    {this.state.clientNotes.map((notesAtIndex, index) => {
                                         return (
-                                            <TableRow key={notes.id}>
-                                                <TableCell>{notes.notes}</TableCell>
-                                                <TableCell><Button color="secondary" onClick={this.removeNote}>Delete<DeleteIcon /></Button></TableCell>
+                                            <TableRow key={index}>
+                                                <TableCell>{notesAtIndex.notes}</TableCell>
+                                                <TableCell><Button color="secondary" onClick={()=>this.removeNote(notesAtIndex.id)}>Delete<DeleteIcon /></Button></TableCell>
                                             </TableRow>
                                         );
                                     })}
@@ -202,7 +216,7 @@ class DisplayClient extends Component {
                                     shrink: true,
                                 }}
                             />
-                            <button>Add</button>
+                            <Button color="primary" onClick={this.addNote}>Add</Button>
                         </ExpansionPanelDetails>
                     </ExpansionPanel>
                 </ExpansionPanel>
