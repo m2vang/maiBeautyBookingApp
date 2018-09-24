@@ -165,4 +165,21 @@ router.get(`/clientPastAppt`, (req, res) => {
   }; //end of if-else auth.
 }); //end of GET
 
+router.get(`/clientNotes`, (req, res) => {
+  if (req.isAuthenticated()) {
+    const user = req.query.user;
+    console.log('user', user);
+    const queryText = `SELECT * FROM "notes" 
+                      WHERE "user_id" = $1`;
+    pool.query(queryText, [user])
+      .then((results) => res.send(results.rows))
+      .catch(error => {
+        console.log('Error in GET clientNotes route', error);
+        res.sendStatus(500);
+      }); //end of pool.query
+  } else {
+    res.sendStatus(403);
+  }; //end of if-else auth.
+}); //end of GET
+
 module.exports = router;
