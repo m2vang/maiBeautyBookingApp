@@ -34,6 +34,7 @@ class DisplayClient extends Component {
             upcomingClientAppts: [],
             pastClientAppts: [],
             clientNotes: [],
+            newNote: '',
         };
     } //end of constructor
 
@@ -76,7 +77,6 @@ class DisplayClient extends Component {
         axios.get(`/api/user/clientNotes?user=${this.props.clientName.id}`)
             .then((response) => {
                 console.log('notes', response.data);
-
                 this.setState({
                     clientNotes: response.data
                 })
@@ -86,17 +86,29 @@ class DisplayClient extends Component {
             }); //end of axios
     } //end of getClientNotes()
 
-    addNote = () => {
-        const id = this.props.clientName.id
-        axios.post('/api/user/newClientNote' + id)
-            .then((response) => {
-                this.getClientNotes();
-            }).catch((error) => {
-                console.log('error in addNote', error);
-                alert('Unable to add new note!');
-            }); //end of axios
-    } //end of addNote
+    handleChange = (event) => {
+        this.setState({
+            // ...this.state({
+            //     clientNotes: [...this.state.clientNotes, event.target.value]
+            // })
+            ...this.state,
+            newNote: event.target.value,
+        });
+    } //end of handleChange
 
+    addNote = (id) => {
+        console.log('in addNote', id);
+        axios({
+            method: 'POST',
+            url: '/api/user/newClientNote/' + id,
+            data: { notes: this.state.newNote }
+        }).then((response) => {
+            this.getClientNotes();
+        }).catch((error) => {
+            console.log('error in addNote', error);
+            alert('Unable to add new note!');
+        });//end of axios
+    } //end of addNote
 
     removeNote = (id) => {
         console.log('in removeNote', id);
@@ -149,7 +161,7 @@ class DisplayClient extends Component {
                                 <TableBody>
                                     {this.state.upcomingClientAppts.map((apptsAtIndex, index) => {
                                         return (
-                                            <DisplayClientAppt key={index} clientAppt={apptsAtIndex} />
+                                            <DisplayClientAppt key={index} clientAppt={apptsAtIndex} getClients={this.getClientAppt} />
                                         )
                                     })}
                                 </TableBody>
@@ -196,7 +208,7 @@ class DisplayClient extends Component {
                                         return (
                                             <TableRow key={index}>
                                                 <TableCell>{notesAtIndex.notes}</TableCell>
-                                                <TableCell><Button color="secondary" onClick={()=>this.removeNote(notesAtIndex.id)}>Delete<DeleteIcon /></Button></TableCell>
+                                                <TableCell><Button color="secondary" onClick={() => this.removeNote(notesAtIndex.id)}>Delete<DeleteIcon /></Button></TableCell>
                                             </TableRow>
                                         );
                                     })}
@@ -208,15 +220,16 @@ class DisplayClient extends Component {
                                 id="outlined-full-width"
                                 label="New Note"
                                 style={{ margin: 8 }}
-                                placeholder=""
                                 fullWidth
                                 margin="normal"
                                 variant="outlined"
                                 InputLabelProps={{
                                     shrink: true,
                                 }}
+                                onChange={this.handleChange}
+                                value={this.state.newNote}
                             />
-                            <Button color="primary" onClick={this.addNote}>Add</Button>
+                            <Button color="primary" onClick={() => this.addNote(this.props.clientName.id)}>Add</Button>
                         </ExpansionPanelDetails>
                     </ExpansionPanel>
                 </ExpansionPanel>

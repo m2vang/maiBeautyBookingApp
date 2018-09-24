@@ -198,7 +198,8 @@ router.delete('/clientNotes/:id', (req, res) => {
   }; //end of if-else auth
 }); //end of DELETE
 
-router.post('/newClientNote', (req, res) => {
+router.post('/newClientNote/:id', (req, res) => {
+  console.log('in POST route', req.params.id);
   if (req.isAuthenticated()) {
     const idWithNote = req.params.id;
     const noteToAdd = req.body;
