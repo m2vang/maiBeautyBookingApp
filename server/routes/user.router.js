@@ -124,7 +124,7 @@ router.get(`/adminClientAppt`, (req, res) => {
   if (req.isAuthenticated()) {
     const user = req.query.user;
     console.log('user', user);
-    const clientApptQuery = `SELECT "category_types"."category", 
+    const clientApptQuery = `SELECT "calendar"."id", "category_types"."category", 
                       "service_types"."service_name", "service_types"."duration", 
                       "start", "end" FROM "calendar" 
                       JOIN "user" ON "calendar"."user_id" = "user"."id" 
@@ -215,5 +215,22 @@ router.post('/newClientNote/:id', (req, res) => {
     res.sendStatus(403);
   }; //end of if-else auth
 }); //end of POST
+
+router.put('/cancelAppt/:id', (req, res) => {
+  console.log('in PUT appt route', req.params.id);
+  if (req.isAuthenticated()) {
+    const idToCancel = req.params.id;
+    const cancelApptQuery = `UPDATE "calendar" SET "cancel_status" = 'true' WHERE "id" = $1;`;
+    pool.query(cancelApptQuery, [idToCancel])
+      .then((results) => {
+        res.sendStatus(200);
+      }).catch((error) => {
+        console.log('error in PUT route', error);
+        res.sendStatus(500);
+      });
+  } else {
+    res.sendStatus(403);
+  }; //end of if-else auth
+}); //end of PUT
 
 module.exports = router;

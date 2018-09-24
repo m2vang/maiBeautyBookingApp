@@ -47,7 +47,7 @@ class DisplayClient extends Component {
     getClientAppt() {
         axios.get(`/api/user/adminClientAppt?user=${this.props.clientName.id}`)
             .then((response) => {
-                console.log('appts:', response.data);
+                console.log('IN Appts', response.data);
                 this.setState({
                     upcomingClientAppts: response.data
                 })
@@ -60,7 +60,6 @@ class DisplayClient extends Component {
     getClientPastAppt() {
         axios.get(`/api/user/adminClientPastAppt?user=${this.props.clientName.id}`)
             .then((response) => {
-                console.log('pastAppts:', response.data);
                 this.setState({
                     pastClientAppts: response.data
                 })
@@ -73,7 +72,6 @@ class DisplayClient extends Component {
     getClientNotes() {
         axios.get(`/api/user/clientNotes?user=${this.props.clientName.id}`)
             .then((response) => {
-                console.log('notes', response.data);
                 this.setState({
                     clientNotes: response.data
                 })
@@ -85,9 +83,6 @@ class DisplayClient extends Component {
 
     handleChange = (event) => {
         this.setState({
-            // ...this.state({
-            //     clientNotes: [...this.state.clientNotes, event.target.value]
-            // })
             ...this.state,
             newNote: event.target.value,
         });
@@ -150,6 +145,7 @@ class DisplayClient extends Component {
                             <Table>
                                 <TableHead>
                                     <TableRow>
+                                        <TableCell>Service</TableCell>
                                         <TableCell>Date</TableCell>
                                         <TableCell>Start</TableCell>
                                         <TableCell>End</TableCell>
@@ -159,7 +155,7 @@ class DisplayClient extends Component {
                                 <TableBody>
                                     {this.state.upcomingClientAppts.map((apptsAtIndex, index) => {
                                         return (
-                                            <DisplayClientAppt key={index} clientAppt={apptsAtIndex} getClients={this.getClientAppt} />
+                                            <DisplayClientAppt key={index} clientAppt={apptsAtIndex} getClients={()=>this.getClientAppt(this.props.clientName.id)} />
                                         )
                                     })}
                                 </TableBody>
@@ -174,6 +170,7 @@ class DisplayClient extends Component {
                             <Table>
                                 <TableHead>
                                     <TableRow>
+                                        <TableCell>Service</TableCell>
                                         <TableCell>Date</TableCell>
                                         <TableCell>Start</TableCell>
                                         <TableCell>End</TableCell>
@@ -206,7 +203,12 @@ class DisplayClient extends Component {
                                         return (
                                             <TableRow key={index}>
                                                 <TableCell>{notesAtIndex.notes}</TableCell>
-                                                <TableCell><Button color="secondary" onClick={() => this.removeNote(notesAtIndex.id)}>Delete<DeleteIcon /></Button></TableCell>
+                                                <TableCell>
+                                                    <Button color="secondary" onClick={() => this.removeNote(notesAtIndex.id)}>
+                                                        Delete
+                                                        <DeleteIcon />
+                                                    </Button>
+                                                </TableCell>
                                             </TableRow>
                                         );
                                     })}

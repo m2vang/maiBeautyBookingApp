@@ -32,7 +32,6 @@ class ListOfClients extends Component {
     getClientName() {
         axios.get('/api/user/clientName/')
             .then((response) => {
-                console.log('back from DB with:', response.data);
                 this.setState({
                     clientName: response.data
                 })

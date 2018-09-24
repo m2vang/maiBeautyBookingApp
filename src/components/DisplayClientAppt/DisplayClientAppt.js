@@ -15,7 +15,7 @@ class DisplayClientAppt extends Component {
         console.log('in cancelAppt', id);
         axios.put('/api/user/cancelAppt/' + id)
             .then((response) => {
-                this.props.getClientAppt();
+                this.props.getClients(id);
             }).catch((error) => {
                 console.log('error in cancelAppt', error);
                 
@@ -25,6 +25,7 @@ class DisplayClientAppt extends Component {
     render() {
         return (
             <TableRow>
+                <TableCell>{this.props.clientAppt.service_name}</TableCell>
                 <TableCell>{moment(this.props.clientAppt.start).format("MMM D YYYY")}</TableCell>
                 <TableCell>{moment(this.props.clientAppt.start).format("hh:mm a")}</TableCell>
                 <TableCell>{moment(this.props.clientAppt.end).format("hh:mm a")}</TableCell>

@@ -12,6 +12,7 @@ class DisplayPastClientAppt extends Component {
     render() {
         return (
             <TableRow>
+                <TableCell>{this.props.clientPastAppt.service_name}</TableCell>
                 <TableCell>{moment(this.props.clientPastAppt.start).format("MMM D YYYY")}</TableCell>
                 <TableCell>{moment(this.props.clientPastAppt.start).format("hh:mm a")}</TableCell>
                 <TableCell>{moment(this.props.clientPastAppt.end).format("hh:mm a")}</TableCell>
