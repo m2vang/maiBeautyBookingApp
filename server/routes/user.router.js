@@ -250,7 +250,7 @@ router.get(`/adminCancelledClientAppt`, (req, res) => {
     pool.query(clientApptQuery, [user])
       .then((results) => res.send(results.rows))
       .catch(error => {
-        console.log('Error in GET clientAppt route', error);
+        console.log('Error in GET cancelledClientAppt route', error);
         res.sendStatus(500);
       }); //end of pool.query
   } else {
