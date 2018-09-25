@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import Calendar from 'react-big-calendar';
 import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
 import 'react-big-calendar/lib/addons/dragAndDrop/styles.less';
-// import '../../libraries/react-big-calendar/lib/addons/dragAndDrop/styles.css';
-// import HTML5Backend from 'react-dnd-html5-backend';
+import '../../libraries/react-big-calendar/lib/addons/dragAndDrop/styles.css';
+import HTML5Backend from 'react-dnd-html5-backend';
 import { DragDropContext } from 'react-dnd';
 import './react-big-calendar.css';
 import moment from 'moment';
@@ -13,6 +13,7 @@ import { USER_ACTIONS } from '../../redux/actions/userActions';
 import { connect } from 'react-redux';
 
 Calendar.setLocalizer(Calendar.momentLocalizer(moment));
+const DragAndDropCalendar = withDragAndDrop(Calendar);
 
 const mapStateToProps = state => ({
     user: state.user,
@@ -45,11 +46,30 @@ class ApptCalendar extends Component {
         }
     }
 
+    selectTime = (slotInfo) => {
+        if (this.props.user.if_stylist === false) {
+            let start = new Date(slotInfo.start);
+            let end = new Date(slotInfo.end);
+            let diffHrs = end.getHours() - start.getHours();
+            let diffMins = end.getMinutes() - start.getMinutes();
+            let diff = diffHrs + (diffMins / 60);
+            this.setState({
+                newEvent: {start: new Date(slotInfo.start), end: new Date(slotInfo.end)},
+                events: [this.state.newEvent]
+            })
+        } else if (this.props.user.if_stylist === true) {
+            this.setState({
+                newEvent: {start: new Date(slotInfo.start), end: new Date(slotInfo.end)},
+                events: [...this.state.events, this.state.newEvent]
+            })
+        }
+    }
+
     render() {
         return (
             <div>
                 <Nav />
-                <Calendar
+                <DragAndDropCalendar
                     defaultDate={new Date()}
                     defaultView={Calendar.Views.WEEK}
                     views={{
@@ -64,11 +84,11 @@ class ApptCalendar extends Component {
                     step={30}
                     min={new Date(2018, 7, 2, 7)}
                     max={new Date(2018, 7, 2, 21)}
-                // onSelectSlot={this.onSelect}
+                    onSelectSlot={this.selectTime}
                 />
             </div>
         );
     }
 }
 
-export default connect(mapStateToProps)(ApptCalendar);
+export default connect(mapStateToProps)(DragDropContext(HTML5Backend)(ApptCalendar));

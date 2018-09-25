@@ -10,6 +10,7 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+
 const mapStateToProps = state => ({
     user: state.user,
 }); // end of mapStateToProps
@@ -22,7 +23,7 @@ class AppointmentsPage extends Component {
             upcomingApptList: [],
         };
     } //end of constructor
-
+    
     componentDidMount() {
         this.getPastAppointments();
         this.getUpcomingAppointments();
