@@ -15,6 +15,15 @@ router.get('/', (req, res) => {
         });
 });;
 
+router.get('/services', (req, res) => {
+    const serviceQuery = `SELECT * FROM "service_types" ORDER BY "category_types_id";`;
+    pool.query(serviceQuery)
+        .then(result => res.send(result.rows))
+        .catch(error => {
+            console.log('error in GET /services', error);
+        });
+});
+
 /**
  * POST route template
  */

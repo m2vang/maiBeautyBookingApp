@@ -12,6 +12,7 @@ import moment from 'moment';
 import { connect } from 'react-redux';
 
 import Nav from '../../components/Nav/Nav';
+import SelectService from '../SelectService/SelectService';
 import { USER_ACTIONS } from '../../redux/actions/userActions';
 import { AVAILABLE_ACTIONS } from '../../redux/actions/availableActions';
 
@@ -39,18 +40,29 @@ class Selectable extends Component {
     }
 
     handleSelect = ({ start, end }) => {
-        const title = window.prompt('New Event name')
-        if (title)
+        if (this.props.user.if_stylist === false) {
+            if (this.state.events[0].start) {
+                alert("You've already chosen a time!")
+            } else {
+                this.setState({
+                    events: [
+                        ...this.state.events,
+                        {
+                            start,
+                            end,
+
+                        },
+                    ],
+                })
+            }
+        } else if (this.props.user.if_stylist === true) {
             this.setState({
                 events: [
-                    ...this.state.events,
-                    {
-                        start,
-                        end,
-                        title,
-                    },
-                ],
+                    ...this.state.events, this.state.newEvent
+                ]
             })
+        }
+            
     }
 
     render() {
@@ -58,6 +70,7 @@ class Selectable extends Component {
         return (
             <div>
                 <Nav />
+                <SelectService />
                 <ExampleControlSlot.Entry waitForOutlet>
                     <strong>
                         Click an event to see more info, or drag the mouse over the calendar
@@ -74,10 +87,13 @@ class Selectable extends Component {
                     // onEventDrop={this.moveEvent}
                     selectable
                     resizable
+                    localizer={localizer}
                     showMultiDayTimes
                     step={30}
                     min={new Date(2018, 7, 2, 7)}
                     max={new Date(2018, 7, 2, 21)}
+                    //this will allow the user to click on the slot & see the event title
+                    onSelectEvent={event => alert(event.title)}
                     onSelectSlot={this.handleSelect}
                 />
             </div>
