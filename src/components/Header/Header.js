@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { triggerLogout } from '../../redux/actions/loginActions';
 import { USER_ACTIONS } from '../../redux/actions/userActions';
+import '../Header/Header.css';
 
 const mapStateToProps = state => ({
   user: state.user,
@@ -25,11 +26,9 @@ class Header extends Component {
         <div className="instructions">
           <div>
             <h1 className="welcome">Welcome, {this.props.user.first_name}!</h1>
-          </div>
-          <div>
             <button onClick={this.logout}>
               Log Out
-          </button>
+            </button>
           </div>
         </div>
       )
