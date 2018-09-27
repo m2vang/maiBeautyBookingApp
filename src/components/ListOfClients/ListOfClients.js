@@ -6,9 +6,6 @@ import DisplayClient from '../DisplayClient/DisplayClient.js';
 //Nav is the navigation bar
 import Nav from '../../components/Nav/Nav';
 import { USER_ACTIONS } from '../../redux/actions/userActions';
-import SearchIcon from '@material-ui/icons/Search';
-import Input from '@material-ui/core/Input';
-
 
 const mapStateToProps = state => ({
     user: state.user,
@@ -66,13 +63,6 @@ class ListOfClients extends Component {
                 <Nav />
                 <div className="header">
                     <span className="name">Clients</span>
-                    <div className="search">
-                        <SearchIcon />
-                        <Input
-                            placeholder="Search..."
-                            disableUnderline
-                        />
-                    </div>
                 </div>
                 {clientContent}
             </div>

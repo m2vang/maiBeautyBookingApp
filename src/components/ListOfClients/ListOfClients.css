@@ -3,13 +3,6 @@
     font-weight: bold;
 }
 
-.search {
-    border-radius: 5px;
-    align-items: 'center';
-    float: right;
-    background-color: aliceblue;
-}
-
 .header {
     padding: 20px;
 }

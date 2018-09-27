@@ -118,7 +118,7 @@ class DisplayClient extends Component {
         });//end of axios
 
         //empty input field
-        this.state.newNote = '';
+        this.newNote = '';
     } //end of addNote
 
     removeNote = (id) => {

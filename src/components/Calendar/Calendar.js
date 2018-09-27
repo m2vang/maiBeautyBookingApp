@@ -1,74 +1,177 @@
 import React, { Component } from 'react';
 import Calendar from 'react-big-calendar';
+import ExampleControlSlot from '../Calendar/ExampleControlSlot';
 import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
 import 'react-big-calendar/lib/addons/dragAndDrop/styles.less';
-// import '../../libraries/react-big-calendar/lib/addons/dragAndDrop/styles.css';
-// import HTML5Backend from 'react-dnd-html5-backend';
+import '../../libraries/react-big-calendar/lib/addons/dragAndDrop/styles.css';
+import HTML5Backend from 'react-dnd-html5-backend';
 import { DragDropContext } from 'react-dnd';
 import './react-big-calendar.css';
 import moment from 'moment';
-
-import Nav from '../../components/Nav/Nav';
-import { USER_ACTIONS } from '../../redux/actions/userActions';
 import { connect } from 'react-redux';
 
+import Nav from '../../components/Nav/Nav';
+import events from './Events';
+import SelectService from '../SelectService/SelectService';
+import { USER_ACTIONS } from '../../redux/actions/userActions';
+import { UNAVAILABLE_ACTIONS } from '../../redux/actions/unavailableActions';
+
+const propTypes = {}
 Calendar.setLocalizer(Calendar.momentLocalizer(moment));
+const DragAndDropCalendar = withDragAndDrop(Calendar);
 
 const mapStateToProps = state => ({
     user: state.user,
+    unavailable: state.unavailable,
+    estimate: state.unavailable.estimate,
 });
 
-class ApptCalendar extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            events: [
-                {
-                    start: null,
-                    end: null,
-                }
-            ],
-            newEvent: {
-                start: null,
-                end: null,
-            }
-        }
+class BigCalendar extends Component {
+    constructor(...args) {
+        super(...args);
+        this.state = { events }
     }
 
     componentDidMount() {
         this.props.dispatch({ type: USER_ACTIONS.FETCH_USER });
+        this.props.dispatch({ type: UNAVAILABLE_ACTIONS.FETCH_UNAVAILABILITY });
+        
     }
 
     componentDidUpdate() {
         if (!this.props.user.isLoading && this.props.user.email === null) {
             this.props.history.push('home');
+        } //end of if statement
+        // if (this.props.unavailable.unavailability.length > 0 && this.state.events.length === 0) {
+        //     this.loopThroughEvents();
+        // } 
+    }
+
+    loopThroughEvents() {
+        console.log('loopThroughEvents');
+        let eventArray = [];
+        for (let event of this.props.unavailable.unavailability) {
+            eventArray.push(event);
+            this.setState({
+                events: eventArray
+            })
         }
     }
 
+    handleSelect = ({ start, end }) => {
+        if (this.props.user.if_stylist === false) {
+            const title = window.prompt('Book Service:')
+            if (title) {
+                this.setState({
+                    events: [
+                        ...this.state.events,
+                        {
+                            start,
+                            end,
+                            title,
+                        },
+                    ],
+                })
+                this.dispatchAppt();
+            }
+        } else if (this.props.user.if_stylist === true) {
+            const title = window.prompt('Block Out For:')
+            if (title) {
+                this.setState({
+                    events: [
+                        ...this.state.events,
+                        {
+                            start,
+                            end,
+                            title,
+                        },
+                    ],
+                })
+                this.dispatchUnavailability();
+            }
+        }
+    }
+
+    dispatchAppt = () => {
+        this.props.dispatch({
+            type: UNAVAILABLE_ACTIONS.STORE_UNAVAILABILITY,
+            payload: this.state.events
+        });
+    }
+
+    dispatchUnavailability = () => {
+        this.props.dispatch({
+            type: UNAVAILABLE_ACTIONS.STORE_UNAVAILABILITY,
+            payload: this.state.events
+        });
+    }
+
     render() {
-        return (
-            <div>
-                <Nav />
-                <Calendar
-                    defaultDate={new Date()}
-                    defaultView={Calendar.Views.WEEK}
-                    views={{
-                        week: true,
-                    }}
-                    events={this.state.events}
-                    // onEventResize={this.resizeEvent}
-                    // onEventDrop={this.moveEvent}
-                    selectable
-                    resizable
-                    showMultiDayTimes
-                    step={30}
-                    min={new Date(2018, 7, 2, 7)}
-                    max={new Date(2018, 7, 2, 21)}
-                // onSelectSlot={this.onSelect}
-                />
-            </div>
-        );
+        const { localizer } = this.props
+        let content = null;
+        if (this.props.user.if_stylist === false) {
+            content = (
+                <div>
+                    <h3>Select a Service:</h3>
+                    <SelectService />
+                </div>
+            )
+        } else if (this.props.if_stylist === true) {
+            content = (
+                <div></div>
+            )
+        }
+
+        console.log('Admin unavailablility:',this.props.unavailable.unavailability);
+        
+        if (this.props.unavailable.unavailability) {
+            return (
+                <div>
+                    <Nav />
+                    {/* {JSON.stringify(this.props.unavailable.unavailability)} */}
+                    {content}
+                    <br />
+                    <ExampleControlSlot.Entry waitForOutlet>
+                        <strong>
+                            Click an event to see more info, or drag the mouse over the calendar
+                            to select a date/time range.
+                    </strong>
+                    </ExampleControlSlot.Entry>
+                    <DragAndDropCalendar
+                        defaultDate={new Date()}
+                        defaultView={Calendar.Views.WEEK}
+                        views={{
+                            week: true,
+                        }}
+                        events={this.state.events}
+                        startAccessor="start"
+                        endAccessor="end"
+                        allDayAccessor="allDay"
+                        titleAccessor="title"
+                        resourceAccessor="resource"
+                        // onEventDrop={this.moveEvent}
+                        selectable
+                        resizable
+                        localizer={localizer}
+                        showMultiDayTimes
+                        step={30}
+                        min={new Date(2018, 7, 2, 7)}
+                        max={new Date(2018, 7, 2, 21)}
+                        //this will allow the user to click on the slot & see the event title
+                        onSelectEvent={event => alert(event.title)}
+                        onSelectSlot={this.handleSelect}
+                    />
+                </div>
+            )
+        } else {
+            return (
+                <p>
+                    {JSON.stringify(this.props.unavailable.unavailability)}
+                </p>
+            )
+        }
     }
 }
 
-export default connect(mapStateToProps)(ApptCalendar);
+BigCalendar.propTypes = propTypes
+export default connect(mapStateToProps)(DragDropContext(HTML5Backend)(BigCalendar));

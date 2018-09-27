@@ -22,7 +22,7 @@ class Nav extends Component {
                 <Link to="/appointments"> My Appointments </Link>
               </li>
               <li>
-                <Link to="/bookappt"> Book an Appointment </Link>
+                <Link to="/calendar"> Book an Appointment </Link>
               </li>
             </ul>
           </div>

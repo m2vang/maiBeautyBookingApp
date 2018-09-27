@@ -74,7 +74,7 @@ router.get('/clientPastAppt', (req, res) => {
                         JOIN "category_types" ON "service_types"."category_types_id" = "category_types"."id" 
                         WHERE "user_id" = $1 and "cancel_status" = false and ("end" <= CURRENT_DATE);`;
     pool.query(pastApptQuery, [req.user.id])
-      .then((results) => res.send(results.rows))
+      .then((result) => res.send(result.rows))
       .catch(error => {
         console.log('Error in GET reminder route', error);
         res.sendStatus(500);
@@ -93,7 +93,7 @@ router.get('/upcomingReminder', (req, res) => {
                         JOIN "category_types" ON "service_types"."category_types_id" = "category_types"."id" 
                         WHERE "user_id" = $1 and "cancel_status" = false and ("end" >= CURRENT_DATE);`;
     pool.query(upcomingApptQuery, [req.user.id])
-      .then((results) => res.send(results.rows))
+      .then((result) => res.send(result.rows))
       .catch(error => {
         console.log('Error in GET upcomingReminder route', error);
         res.sendStatus(500);
@@ -110,7 +110,7 @@ router.get('/clientName', (req, res) => {
                         WHERE "if_stylist" = false 
                         ORDER BY "first_name";`;
     pool.query(clientNameQuery)
-      .then((results) => res.send(results.rows))
+      .then((result) => res.send(result.rows))
       .catch(error => {
         console.log('Error in GET clientName route', error);
         res.sendStatus(500);
@@ -132,7 +132,7 @@ router.get(`/adminClientAppt`, (req, res) => {
                       JOIN "category_types" ON "service_types"."category_types_id" = "category_types"."id" 
                       WHERE "user_id" = $1 and "cancel_status" = false and ("end" >= CURRENT_DATE);`;
     pool.query(clientApptQuery, [user])
-      .then((results) => res.send(results.rows))
+      .then((result) => res.send(result.rows))
       .catch(error => {
         console.log('Error in GET clientAppt route', error);
         res.sendStatus(500);
@@ -154,7 +154,7 @@ router.get(`/adminClientPastAppt`, (req, res) => {
                       JOIN "category_types" ON "service_types"."category_types_id" = "category_types"."id" 
                       WHERE "user_id" = $1 and "cancel_status" = false and ("end" <= CURRENT_DATE);`;
     pool.query(clientPastApptQuery, [user])
-      .then((results) => res.send(results.rows))
+      .then((result) => res.send(result.rows))
       .catch(error => {
         console.log('Error in GET clientPastAppt route', error);
         res.sendStatus(500);
@@ -171,7 +171,7 @@ router.get(`/clientNotes`, (req, res) => {
     const clientNotesQuery = `SELECT * FROM "notes" 
                       WHERE "user_id" = $1`;
     pool.query(clientNotesQuery, [user])
-      .then((results) => res.send(results.rows))
+      .then((result) => res.send(result.rows))
       .catch(error => {
         console.log('Error in GET clientNotes route', error);
         res.sendStatus(500);
@@ -187,7 +187,7 @@ router.delete('/clientNotes/:id', (req, res) => {
     const idToDelete = req.params.id;
     const deleteNoteQuery = `DELETE FROM "notes" WHERE "id" = $1;`;
     pool.query(deleteNoteQuery, [idToDelete])
-      .then((results) => {
+      .then((result) => {
         res.sendStatus(200);
       }).catch((error) => {
         console.log('error in DELETE route', error);
@@ -206,8 +206,8 @@ router.post('/newClientNote/:id', (req, res) => {
     const noteDate = req.body.date;
     const addNoteQuery = `INSERT INTO "notes" ("date", "notes", "user_id") VALUES ($1, $2, $3);`;
     pool.query(addNoteQuery, [noteDate, noteToAdd, idWithNote])
-      .then((results) => {
-        res.send(results.rows);
+      .then((result) => {
+        res.send(result.rows);
       }).catch((error) => {
         console.log('error in POST route', error);
         res.sendStatus(500);
@@ -224,7 +224,7 @@ router.put('/cancelAppt/:id', (req, res) => {
     const newDate = req.body.date;
     const cancelApptQuery = `UPDATE "calendar" SET "cancel_status" = 'true', "cancel_date" = $1 WHERE "id" = $2;`;
     pool.query(cancelApptQuery, [newDate, idToCancel])
-      .then((results) => {
+      .then((result) => {
         res.sendStatus(200);
       }).catch((error) => {
         console.log('error in PUT route', error);
@@ -248,9 +248,9 @@ router.get(`/adminCancelledClientAppt`, (req, res) => {
                       JOIN "category_types" ON "service_types"."category_types_id" = "category_types"."id" 
                       WHERE "user_id" = $1 and "cancel_status" = 'true';`;
     pool.query(clientApptQuery, [user])
-      .then((results) => res.send(results.rows))
+      .then((result) => res.send(result.rows))
       .catch(error => {
-        console.log('Error in GET clientAppt route', error);
+        console.log('Error in GET cancelledClientAppt route', error);
         res.sendStatus(500);
       }); //end of pool.query
   } else {
