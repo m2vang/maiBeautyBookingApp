@@ -22,8 +22,9 @@ const DragAndDropCalendar = withDragAndDrop(Calendar);
 
 const mapStateToProps = state => ({
     user: state.user,
+    appointment: state.unavailable.appointment,
+    newAppointment: state.unavailable.newAppointment,
     unavailable: state.unavailable,
-    estimate: state.unavailable.estimate,
 });
 
 class BigCalendar extends Component {
@@ -34,28 +35,13 @@ class BigCalendar extends Component {
 
     componentDidMount() {
         this.props.dispatch({ type: USER_ACTIONS.FETCH_USER });
-        this.props.dispatch({ type: UNAVAILABLE_ACTIONS.FETCH_UNAVAILABILITY });
-        
+        this.props.dispatch({ type: UNAVAILABLE_ACTIONS.FETCH_UNAVAILABILITY });       
     }
 
     componentDidUpdate() {
         if (!this.props.user.isLoading && this.props.user.email === null) {
             this.props.history.push('home');
         } //end of if statement
-        // if (this.props.unavailable.unavailability.length > 0 && this.state.events.length === 0) {
-        //     this.loopThroughEvents();
-        // } 
-    }
-
-    loopThroughEvents() {
-        console.log('loopThroughEvents');
-        let eventArray = [];
-        for (let event of this.props.unavailable.unavailability) {
-            eventArray.push(event);
-            this.setState({
-                events: eventArray
-            })
-        }
     }
 
     handleSelect = ({ start, end }) => {
@@ -107,6 +93,15 @@ class BigCalendar extends Component {
     }
 
     render() {
+
+        const thisUnavailable = this.props.unavailable.unavailability.map((event, index) => {
+            const modifiedEvent = event;
+            modifiedEvent.start = new Date(modifiedEvent.start);
+            modifiedEvent.end = new Date(modifiedEvent.end);
+            return modifiedEvent;
+        }) 
+
+
         const { localizer } = this.props
         let content = null;
         if (this.props.user.if_stylist === false) {
@@ -118,7 +113,9 @@ class BigCalendar extends Component {
             )
         } else if (this.props.if_stylist === true) {
             content = (
-                <div></div>
+                <div>
+                  
+                </div>
             )
         }
 
@@ -143,7 +140,7 @@ class BigCalendar extends Component {
                         views={{
                             week: true,
                         }}
-                        events={this.state.events}
+                        events={thisUnavailable}                        
                         startAccessor="start"
                         endAccessor="end"
                         allDayAccessor="allDay"

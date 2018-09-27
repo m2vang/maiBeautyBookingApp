@@ -1,25 +1,25 @@
 import { combineReducers } from 'redux';
 import { UNAVAILABLE_ACTIONS } from '../actions/unavailableActions';
 
-// const availability = (state = [], action) => {
-//     switch (action.type) {
-//         case AVAILABLE_ACTIONS.STORE_AVAILABILITY:
-//             return action.payload;
-//         default:
-//             return state;
-//     }
-// }
+const appointment = (state = [], action) => {
+    switch (action.type) {
+        case UNAVAILABLE_ACTIONS.STORE_APPOINTMENT:
+            return action.payload;
+        default:
+            return state;
+    }
+}
 
-// const newAvailability = (state = [], action) => {
-//     switch (action.type) {
-//         case AVAILABLE_ACTIONS.NEW_AVAILABILITY:
-//             return [...state, action.payload];
-//         case AVAILABLE_ACTIONS.RESET_NEW_AVAILABILITY:
-//             return [];
-//         default:
-//             return state;
-//     }
-// }
+const newAppointment = (state = [], action) => {
+    switch (action.type) {
+        case UNAVAILABLE_ACTIONS.NEW_APPOINTMENT:
+            return [...state, action.payload];
+        case UNAVAILABLE_ACTIONS.RESET_NEW_APPOINTMENT:
+            return [];
+        default:
+            return state;
+    }
+}
 
 const unavailability = (state = [], action) => {
     switch (action.type) {
@@ -40,8 +40,8 @@ const estimate = (state = {duration: 0}, action) => {
 }
 
 export default combineReducers({
-    // availability,
-    // newAvailability,
+    appointment,
+    newAppointment,
     unavailability,
     estimate,
 });

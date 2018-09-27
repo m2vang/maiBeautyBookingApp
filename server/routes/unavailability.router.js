@@ -31,7 +31,7 @@ router.get('/services', (req, res) => {
 });
 
 router.get('/', (req, res) => {
-    const unavailableQuery = `SELECT * FROM "unavailability";`;
+    const unavailableQuery = `SELECT *, 'Unavailable' as title FROM "unavailability";`;
     pool.query(unavailableQuery)
         .then(result => res.send(result.rows))
         .catch(error => {
