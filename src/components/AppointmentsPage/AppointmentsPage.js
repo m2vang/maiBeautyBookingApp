@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
+import '../AppointmentsPage/AppointmentsPage.css';
 //Nav is the navigation bar
 import Nav from '../../components/Nav/Nav';
 import DisplayAppointment from '../DisplayAppointment/DisplayAppointment';
