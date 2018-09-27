@@ -17,7 +17,7 @@ class SelectService extends Component {
     }
 
     getServices() {
-        axios.get('/api/availability/services/')
+        axios.get('/api/unavailability/services/')
             .then((response) => {
                 console.log('service', response.data);
                 this.setState({

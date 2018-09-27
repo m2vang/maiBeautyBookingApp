@@ -35,12 +35,27 @@ class BigCalendar extends Component {
     componentDidMount() {
         this.props.dispatch({ type: USER_ACTIONS.FETCH_USER });
         this.props.dispatch({ type: UNAVAILABLE_ACTIONS.FETCH_UNAVAILABILITY });
+        
     }
 
     componentDidUpdate() {
         if (!this.props.user.isLoading && this.props.user.email === null) {
             this.props.history.push('home');
         } //end of if statement
+        // if (this.props.unavailable.unavailability.length > 0 && this.state.events.length === 0) {
+        //     this.loopThroughEvents();
+        // } 
+    }
+
+    loopThroughEvents() {
+        console.log('loopThroughEvents');
+        let eventArray = [];
+        for (let event of this.props.unavailable.unavailability) {
+            eventArray.push(event);
+            this.setState({
+                events: eventArray
+            })
+        }
     }
 
     handleSelect = ({ start, end }) => {
@@ -57,7 +72,7 @@ class BigCalendar extends Component {
                         },
                     ],
                 })
-                this.dispatchApt();
+                this.dispatchAppt();
             }
         } else if (this.props.user.if_stylist === true) {
             const title = window.prompt('Block Out For:')
@@ -113,6 +128,7 @@ class BigCalendar extends Component {
             return (
                 <div>
                     <Nav />
+                    {/* {JSON.stringify(this.props.unavailable.unavailability)} */}
                     {content}
                     <br />
                     <ExampleControlSlot.Entry waitForOutlet>
@@ -128,6 +144,11 @@ class BigCalendar extends Component {
                             week: true,
                         }}
                         events={this.state.events}
+                        startAccessor="start"
+                        endAccessor="end"
+                        allDayAccessor="allDay"
+                        titleAccessor="title"
+                        resourceAccessor="resource"
                         // onEventDrop={this.moveEvent}
                         selectable
                         resizable
