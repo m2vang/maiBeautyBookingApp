@@ -14,7 +14,7 @@ import Nav from '../../components/Nav/Nav';
 import events from './Events';
 import SelectService from '../SelectService/SelectService';
 import { USER_ACTIONS } from '../../redux/actions/userActions';
-import { AVAILABLE_ACTIONS } from '../../redux/actions/availableActions';
+import { UNAVAILABLE_ACTIONS } from '../../redux/actions/unavailableActions';
 
 const propTypes = {}
 Calendar.setLocalizer(Calendar.momentLocalizer(moment));
@@ -22,9 +22,8 @@ const DragAndDropCalendar = withDragAndDrop(Calendar);
 
 const mapStateToProps = state => ({
     user: state.user,
-    available: state.available.available,
-    unavailable: state.available.unavailable,
-    estimate: state.available.estimate,
+    unavailable: state.unavailable,
+    estimate: state.unavailable.estimate,
 });
 
 class BigCalendar extends Component {
@@ -35,8 +34,7 @@ class BigCalendar extends Component {
 
     componentDidMount() {
         this.props.dispatch({ type: USER_ACTIONS.FETCH_USER });
-        this.props.dispatch({ type: AVAILABLE_ACTIONS.FETCH_AVAILABILITY });
-        this.props.dispatch({ type: AVAILABLE_ACTIONS.FETCH_UNAVAILABILITY });
+        this.props.dispatch({ type: UNAVAILABLE_ACTIONS.FETCH_UNAVAILABILITY });
     }
 
     componentDidUpdate() {
@@ -45,12 +43,7 @@ class BigCalendar extends Component {
         } //end of if statement
     }
 
-    postBooking() {
-        console.log('in postBooking',);
-        
-    }
-
-    handleSelect = ({start, end}) => {
+    handleSelect = ({ start, end }) => {
         if (this.props.user.if_stylist === false) {
             const title = window.prompt('Book Service:')
             if (title) {
@@ -85,15 +78,17 @@ class BigCalendar extends Component {
     }
 
     dispatchAppt = () => {
-        this.props.dispatch({ 
-            type: AVAILABLE_ACTIONS.STORE_UNAVAILABILITY, 
-            payload: this.state.events });
+        this.props.dispatch({
+            type: UNAVAILABLE_ACTIONS.STORE_UNAVAILABILITY,
+            payload: this.state.events
+        });
     }
 
     dispatchUnavailability = () => {
-        this.props.dispatch({ 
-            type: AVAILABLE_ACTIONS.STORE_UNAVAILABILITY, 
-            payload: this.state.events });
+        this.props.dispatch({
+            type: UNAVAILABLE_ACTIONS.STORE_UNAVAILABILITY,
+            payload: this.state.events
+        });
     }
 
     render() {
@@ -112,38 +107,48 @@ class BigCalendar extends Component {
             )
         }
 
-        return (
-            <div>
-                <Nav />
-                {content}
-                <br />
-                <ExampleControlSlot.Entry waitForOutlet>
-                    <strong>
-                        Click an event to see more info, or drag the mouse over the calendar
-                        to select a date/time range.
+        console.log('Admin unavailablility:',this.props.unavailable.unavailability);
+        
+        if (this.props.unavailable.unavailability) {
+            return (
+                <div>
+                    <Nav />
+                    {content}
+                    <br />
+                    <ExampleControlSlot.Entry waitForOutlet>
+                        <strong>
+                            Click an event to see more info, or drag the mouse over the calendar
+                            to select a date/time range.
                     </strong>
-                </ExampleControlSlot.Entry>
-                <DragAndDropCalendar
-                    defaultDate={new Date()}
-                    defaultView={Calendar.Views.WEEK}
-                    views={{
-                        week: true,
-                    }}
-                    events={this.state.events}
-                    // onEventDrop={this.moveEvent}
-                    selectable
-                    resizable
-                    localizer={localizer}
-                    showMultiDayTimes
-                    step={30}
-                    min={new Date(2018, 7, 2, 7)}
-                    max={new Date(2018, 7, 2, 21)}
-                    //this will allow the user to click on the slot & see the event title
-                    onSelectEvent={event => alert(event.title)}
-                    onSelectSlot={this.handleSelect}
-                />
-            </div>
-        )
+                    </ExampleControlSlot.Entry>
+                    <DragAndDropCalendar
+                        defaultDate={new Date()}
+                        defaultView={Calendar.Views.WEEK}
+                        views={{
+                            week: true,
+                        }}
+                        events={this.state.events}
+                        // onEventDrop={this.moveEvent}
+                        selectable
+                        resizable
+                        localizer={localizer}
+                        showMultiDayTimes
+                        step={30}
+                        min={new Date(2018, 7, 2, 7)}
+                        max={new Date(2018, 7, 2, 21)}
+                        //this will allow the user to click on the slot & see the event title
+                        onSelectEvent={event => alert(event.title)}
+                        onSelectSlot={this.handleSelect}
+                    />
+                </div>
+            )
+        } else {
+            return (
+                <p>
+                    {JSON.stringify(this.props.unavailable.unavailability)}
+                </p>
+            )
+        }
     }
 }
 

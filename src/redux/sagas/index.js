@@ -1,14 +1,14 @@
 import { all } from 'redux-saga/effects';
 import userSaga from './userSaga';
 import loginSaga from './loginSaga';
-import availabilitySaga from './availabilitySaga';
+import unavailabilitySaga from './unavailabilitySaga';
 
 
 export default function* rootSaga() {
   yield all([
     userSaga(),
     loginSaga(),
-    availabilitySaga(),
+    unavailabilitySaga(),
     // watchIncrementAsync()
   ]);
 }

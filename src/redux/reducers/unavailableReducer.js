@@ -1,14 +1,14 @@
 import { combineReducers } from 'redux';
-import { AVAILABLE_ACTIONS } from '../actions/availableActions';
+import { UNAVAILABLE_ACTIONS } from '../actions/unavailableActions';
 
-const availablility = (state = [], action) => {
-    switch (action.type) {
-        case AVAILABLE_ACTIONS.STORE_AVAILABILITY:
-            return action.payload;
-        default:
-            return state;
-    }
-}
+// const availability = (state = [], action) => {
+//     switch (action.type) {
+//         case AVAILABLE_ACTIONS.STORE_AVAILABILITY:
+//             return action.payload;
+//         default:
+//             return state;
+//     }
+// }
 
 // const newAvailability = (state = [], action) => {
 //     switch (action.type) {
@@ -23,7 +23,7 @@ const availablility = (state = [], action) => {
 
 const unavailability = (state = [], action) => {
     switch (action.type) {
-        case AVAILABLE_ACTIONS.STORE_UNAVAILABILITY:
+        case UNAVAILABLE_ACTIONS.STORE_UNAVAILABILITY:
             return action.payload;
         default:
             return state;
@@ -32,7 +32,7 @@ const unavailability = (state = [], action) => {
 
 const estimate = (state = {duration: 0}, action) => {
     switch (action.type) {
-        case AVAILABLE_ACTIONS.FETCH_ESTIMATE_DURATION:
+        case UNAVAILABLE_ACTIONS.FETCH_ESTIMATE_DURATION:
             return {...state, duration: action.payload};
         default:
             return state;
@@ -40,7 +40,7 @@ const estimate = (state = {duration: 0}, action) => {
 }
 
 export default combineReducers({
-    availablility,
+    // availability,
     // newAvailability,
     unavailability,
     estimate,

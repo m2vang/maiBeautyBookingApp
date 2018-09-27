@@ -1,12 +1,12 @@
 import { combineReducers } from 'redux';
 import user from './userReducer';
 import login from './loginReducer';
-import available from './availableReducer';
+import unavailable from './unavailableReducer';
 
 const store = combineReducers({
   user,
   login,
-  available
+  unavailable
 });
 
 export default store;
