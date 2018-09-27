@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
-import Service from './Service';
 
 
 class SelectService extends Component {
@@ -9,6 +8,7 @@ class SelectService extends Component {
         super(props);
         this.state = {
             services: [],
+            selectedService: [],
         };
     } //end of constructor
 
@@ -20,7 +20,6 @@ class SelectService extends Component {
         axios.get('/api/availability/services/')
             .then((response) => {
                 console.log('service', response.data);
-
                 this.setState({
                     services: response.data
                 })
@@ -29,16 +28,23 @@ class SelectService extends Component {
             })
     }
 
+    selectedService = (id) => {
+        // this.setState({
+        //     selectedService: response.data
+        // })
+    }
+
     render() {
         return (
             <div>
-                <select>
-                    {this.state.services.map((services, index) => {
+                <select onSelect={this.selectedService()}>
+                    {this.state.services.map((service, index) => {
                         return (
-                            <Service key={index} service={services} />
+                            <option key={index}>{service.service_name}</option>
                         )
                     })}
                 </select>
+                <h4>Your recommended time frame is: {this.state.service}</h4>
             </div>
         )
     }

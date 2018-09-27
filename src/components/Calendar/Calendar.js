@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Calendar from 'react-big-calendar';
-import events from '../Calendar/Events';
 import ExampleControlSlot from '../Calendar/ExampleControlSlot';
 import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
 import 'react-big-calendar/lib/addons/dragAndDrop/styles.less';
@@ -12,6 +11,7 @@ import moment from 'moment';
 import { connect } from 'react-redux';
 
 import Nav from '../../components/Nav/Nav';
+import events from './Events';
 import SelectService from '../SelectService/SelectService';
 import { USER_ACTIONS } from '../../redux/actions/userActions';
 import { AVAILABLE_ACTIONS } from '../../redux/actions/availableActions';
@@ -24,12 +24,12 @@ const mapStateToProps = state => ({
     user: state.user,
     available: state.available.available,
     unavailable: state.available.unavailable,
-
+    estimate: state.available.estimate,
 });
 
-class Selectable extends Component {
+class BigCalendar extends Component {
     constructor(...args) {
-        super(...args)
+        super(...args);
         this.state = { events }
     }
 
@@ -39,38 +39,84 @@ class Selectable extends Component {
         this.props.dispatch({ type: AVAILABLE_ACTIONS.FETCH_UNAVAILABILITY });
     }
 
-    handleSelect = ({ start, end }) => {
+    componentDidUpdate() {
+        if (!this.props.user.isLoading && this.props.user.email === null) {
+            this.props.history.push('home');
+        } //end of if statement
+    }
+
+    postBooking() {
+        console.log('in postBooking',);
+        
+    }
+
+    handleSelect = ({start, end}) => {
         if (this.props.user.if_stylist === false) {
-            if (this.state.events[0].start) {
-                alert("You've already chosen a time!")
-            } else {
+            const title = window.prompt('Book Service:')
+            if (title) {
                 this.setState({
                     events: [
                         ...this.state.events,
                         {
                             start,
                             end,
-
+                            title,
                         },
                     ],
                 })
+                this.dispatchApt();
             }
         } else if (this.props.user.if_stylist === true) {
-            this.setState({
-                events: [
-                    ...this.state.events, this.state.newEvent
-                ]
-            })
+            const title = window.prompt('Block Out For:')
+            if (title) {
+                this.setState({
+                    events: [
+                        ...this.state.events,
+                        {
+                            start,
+                            end,
+                            title,
+                        },
+                    ],
+                })
+                this.dispatchUnavailability();
+            }
         }
-            
+    }
+
+    dispatchAppt = () => {
+        this.props.dispatch({ 
+            type: AVAILABLE_ACTIONS.STORE_UNAVAILABILITY, 
+            payload: this.state.events });
+    }
+
+    dispatchUnavailability = () => {
+        this.props.dispatch({ 
+            type: AVAILABLE_ACTIONS.STORE_UNAVAILABILITY, 
+            payload: this.state.events });
     }
 
     render() {
         const { localizer } = this.props
+        let content = null;
+        if (this.props.user.if_stylist === false) {
+            content = (
+                <div>
+                    <h3>Select a Service:</h3>
+                    <SelectService />
+                </div>
+            )
+        } else if (this.props.if_stylist === true) {
+            content = (
+                <div></div>
+            )
+        }
+
         return (
             <div>
                 <Nav />
-                <SelectService />
+                {content}
+                <br />
                 <ExampleControlSlot.Entry waitForOutlet>
                     <strong>
                         Click an event to see more info, or drag the mouse over the calendar
@@ -101,5 +147,5 @@ class Selectable extends Component {
     }
 }
 
-Selectable.propTypes = propTypes
-export default connect(mapStateToProps)(DragDropContext(HTML5Backend)(Selectable));
+BigCalendar.propTypes = propTypes
+export default connect(mapStateToProps)(DragDropContext(HTML5Backend)(BigCalendar));

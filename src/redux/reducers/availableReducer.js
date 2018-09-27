@@ -10,16 +10,16 @@ const availablility = (state = [], action) => {
     }
 }
 
-const newAvailability = (state = [], action) => {
-    switch (action.type) {
-        case AVAILABLE_ACTIONS.NEW_AVAILABILITY:
-            return [...state, action.payload];
-        case AVAILABLE_ACTIONS.RESET_NEW_AVAILABILITY:
-            return [];
-        default:
-            return state;
-    }
-}
+// const newAvailability = (state = [], action) => {
+//     switch (action.type) {
+//         case AVAILABLE_ACTIONS.NEW_AVAILABILITY:
+//             return [...state, action.payload];
+//         case AVAILABLE_ACTIONS.RESET_NEW_AVAILABILITY:
+//             return [];
+//         default:
+//             return state;
+//     }
+// }
 
 const unavailability = (state = [], action) => {
     switch (action.type) {
@@ -30,8 +30,18 @@ const unavailability = (state = [], action) => {
     }
 }
 
+const estimate = (state = {duration: 0}, action) => {
+    switch (action.type) {
+        case AVAILABLE_ACTIONS.FETCH_ESTIMATE_DURATION:
+            return {...state, duration: action.payload};
+        default:
+            return state;
+    }
+}
+
 export default combineReducers({
     availablility,
-    newAvailability,
+    // newAvailability,
     unavailability,
+    estimate,
 });

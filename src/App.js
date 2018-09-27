@@ -9,12 +9,20 @@ import {
 import Header from './components/Header/Header';
 import LoginPage from './components/LoginPage/LoginPage';
 import RegisterPage from './components/RegisterPage/RegisterPage';
+
+//shared view between admin & user
 import InfoPage from './components/InfoPage/InfoPage';
+
+//admin view
 import AdminCalendar from './components/Calendar/Calendar';
-import BookAnAppt from './components/BookAnAppt/BookAnAppt';
 import ListOfClients from './components/ListOfClients/ListOfClients';
-import ErrorPage from './components/ErrorPage/ErrorPage';
+
+//client view
+import BookAnAppt from './components/BookAnAppt/BookAnAppt';
 import AppointmentsPage from './components/AppointmentsPage/AppointmentsPage';
+
+//error view
+import ErrorPage from './components/ErrorPage/ErrorPage';
 
 import './styles/main.css';
 
