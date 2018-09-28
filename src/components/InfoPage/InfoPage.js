@@ -1,10 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
+import '../InfoPage/InfoPage.css';
 //Nav is the navigation bar
 import Nav from '../../components/Nav/Nav';
 //Reducers
 import { USER_ACTIONS } from '../../redux/actions/userActions';
+
+import Button from '@material-ui/core/Button';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import Typography from '@material-ui/core/Typography';
 
 const mapStateToProps = state => ({
   user: state.user,
@@ -77,9 +83,9 @@ class InfoPage extends Component {
         last_name: this.props.user.last_name,
         telephone: this.props.user.telephone,
       };
-      
+
       //axios PUT to update user's info
-      axios.put('/api/user/register/', body)
+      axios.put('/api/user/registerUpdate/', body)
         .then((response) => {
           if (response.status === 200) {
             this.setState({ edit: false });
@@ -103,17 +109,23 @@ class InfoPage extends Component {
     //if edit is false show this on DOM
     if (this.state.edit === false) {
       content = (
-        <div>
-          <p>First Name: {this.props.user.first_name}</p>
-          <p>Last Name: {this.props.user.last_name}</p>
-          <p>Telephone: {this.props.user.telephone}</p>
-          <button onClick={this.edit}>Edit</button>
-        </div>
+        <Card className="info">
+          <CardContent>
+            <Typography component="p">
+              First Name: {this.props.user.first_name}
+              <br />
+              Last Name: {this.props.user.last_name}
+              <br />
+              Telephone: {this.props.user.telephone}
+            </Typography>
+          </CardContent>
+          <Button variant="outlined" color="primary" onClick={this.edit}>Edit</Button>
+        </Card>
       ) //end of content for edit=false
     } else { //otherwise show this on DOM
       content = (
-        <div>
-          <form onSubmit={this.updateUser}>
+        <Card className="newInfo">
+          <CardContent>
             <h1>Edit Account</h1>
             <div>
               <label htmlFor="first_name">
@@ -148,16 +160,10 @@ class InfoPage extends Component {
                 />
               </label>
             </div>
-            <div>
-              <input
-                type="submit"
-                name="submit"
-                value="Save"
-              />
-              <button onClick={this.cancelEdit}>Cancel</button>
-            </div>
-          </form>
-        </div>
+          </CardContent>
+          <Button variant="outlined" color="primary" onClick={this.updateUser}>Save</Button>
+          <Button variant="outlined" color="secondary" onClick={this.cancelEdit}>Cancel</Button>
+        </Card>
       ) //end of content for edit=true
     } //end of if-else
 
