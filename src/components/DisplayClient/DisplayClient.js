@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
+import swal from 'sweetalert';
+
 import DisplayClientAppt from '../DisplayClientAppt/DisplayClientAppt.js';
 import DisplayPastClientAppt from '../DisplayPastClientAppt/DisplayPastClientAppt.js';
 import DisplayCancelledClientAppt from '../DisplayCancelledClientAppt/DisplayCancelledClientAppt.js';
@@ -19,11 +21,11 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import DeleteIcon from '@material-ui/icons/Delete';
 const moment = require('moment');
+
 
 const mapStateToProps = state => ({
     notes: state.notes,
@@ -105,6 +107,7 @@ class DisplayClient extends Component {
     } //end of handleChange
 
     addNote = (id) => {
+        swal("Note Added!", "Your note has been saved!", "success");
         let date = new Date();
         axios({
             method: 'POST',
@@ -118,10 +121,11 @@ class DisplayClient extends Component {
         });//end of axios
 
         //empty input field
-        this.newNote = '';
+        this.state.newNote = '';
     } //end of addNote
 
     removeNote = (id) => {
+        swal("Note Deleted!", "Your note has been deleted!", "success");
         axios.delete('/api/user/clientNotes/' + id)
             .then((response) => {
                 this.getClientNotes();
