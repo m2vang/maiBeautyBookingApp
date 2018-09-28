@@ -6,7 +6,7 @@ import '../InfoPage/InfoPage.css';
 import Nav from '../../components/Nav/Nav';
 //Reducers
 import { USER_ACTIONS } from '../../redux/actions/userActions';
-
+import swal from 'sweetalert';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -43,6 +43,7 @@ class InfoPage extends Component {
 
   //set edit to false
   cancelEdit = () => {
+    swal("Cancelled!", "You clicked cancel!", "success");
     this.setState({ edit: false });
     this.props.dispatch({ type: USER_ACTIONS.FETCH_USER });
   } //end of cancelEdit()
@@ -73,6 +74,7 @@ class InfoPage extends Component {
 
   updateUser = (event) => {
     event.preventDefault();
+    swal("Saved!", "Your changes have been made!", "success");
     if (this.props.user.first_name === '' || this.props.user.last_name === '' || this.props.user.telephone === '') {
       this.setState({
         message: 'Please fill in all fields!',
