@@ -19,7 +19,6 @@ class SelectService extends Component {
     getServices() {
         axios.get('/api/unavailability/services/')
             .then((response) => {
-                console.log('service', response.data);
                 this.setState({
                     services: response.data
                 })
@@ -28,10 +27,10 @@ class SelectService extends Component {
             })
     }
 
-    selectedService = (id) => {
-        // this.setState({
-        //     selectedService: response.data
-        // })
+    selectedService = (value) => {
+        console.log('in selectedService', value);
+        let service = value;
+
     }
 
     render() {
@@ -40,11 +39,11 @@ class SelectService extends Component {
                 <select onSelect={this.selectedService()}>
                     {this.state.services.map((service, index) => {
                         return (
-                            <option key={index}>{service.service_name}</option>
+                            <option key={index} onChange={this.selectedService()}>{service.service_name}</option>
                         )
                     })}
                 </select>
-                <h4>Your recommended time frame is: {this.state.service}</h4>
+                <h4>Your recommended time frame is: </h4>
             </div>
         )
     }

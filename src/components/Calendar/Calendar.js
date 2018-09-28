@@ -107,7 +107,7 @@ class BigCalendar extends Component {
         if (this.props.user.if_stylist === false) {
             content = (
                 <div>
-                    <h3>Select a Service:</h3>
+                    <h3>Services Offered:</h3>
                     <SelectService />
                 </div>
             )

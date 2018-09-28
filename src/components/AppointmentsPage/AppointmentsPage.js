@@ -62,6 +62,12 @@ class AppointmentsPage extends Component {
             }) //end of axios
     } //end of getUpcomingApptReminder()
 
+    handleSortChange = propName => (event) => {
+        this.setState({
+            sortTitle: [propName],
+        })
+    }
+
     render() {
         let upcomingContent = null;
         let pastContent = null;
@@ -72,10 +78,10 @@ class AppointmentsPage extends Component {
                 <Table>
                     <TableHead>
                         <TableRow>
-                            <TableCell>Category</TableCell>
-                            <TableCell>Service Type</TableCell>
-                            <TableCell>Duration</TableCell>
-                            <TableCell>Date</TableCell>
+                            <TableCell onClick={this.handleSortChange("Category")}>Category</TableCell>
+                            <TableCell onClick={this.handleSortChange("Service_Type")}>Service Type</TableCell>
+                            <TableCell onClick={this.handleSortChange("Duration")}>Duration</TableCell>
+                            <TableCell onClick={this.handleSortChange("Date")}>Date</TableCell>
                             <TableCell>Time</TableCell>
                         </TableRow>
                     </TableHead>
