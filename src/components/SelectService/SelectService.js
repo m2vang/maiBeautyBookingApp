@@ -27,19 +27,19 @@ class SelectService extends Component {
             })
     }
 
-    selectedService = (value) => {
-        console.log('in selectedService', value);
-        let service = value;
-
+    selectedService = (event) => {
+        console.log('in selectedService', event.target.value);
+        let service = event.target.value;
+        this.props.setApptType(service);
     }
 
     render() {
         return (
             <div>
-                <select onSelect={this.selectedService()}>
+                <select onChange={this.selectedService}>
                     {this.state.services.map((service, index) => {
                         return (
-                            <option key={index} onChange={this.selectedService()}>{service.service_name}</option>
+                            <option key={index} value={service.id}>{service.service_name}</option>
                         )
                     })}
                 </select>

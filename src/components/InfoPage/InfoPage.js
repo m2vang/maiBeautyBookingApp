@@ -121,7 +121,7 @@ class InfoPage extends Component {
               Telephone: {this.props.user.telephone}
             </Typography>
           </CardContent>
-          <Button variant="outlined" color="primary" onClick={this.edit}>Edit</Button>
+          <Button className="button" variant="outlined" color="primary" onClick={this.edit}>Edit</Button>
         </Card>
       ) //end of content for edit=false
     } else { //otherwise show this on DOM
@@ -145,6 +145,7 @@ class InfoPage extends Component {
               <label htmlFor="last_name">
                 Last Name:
               <input
+                  className="newInput"
                   type="text"
                   name="last_name"
                   value={this.props.user.last_name}
@@ -156,6 +157,7 @@ class InfoPage extends Component {
               <label htmlFor="telephone">
                 Telephone:
               <input
+                  className="newInput"
                   country="US"
                   name="telephone"
                   value={this.props.user.telephone}
@@ -164,7 +166,7 @@ class InfoPage extends Component {
               </label>
             </div>
           </CardContent>
-          <Button variant="outlined" color="primary" onClick={this.updateUser}>Save</Button>
+          <Button className="button"variant="outlined" color="primary" onClick={this.updateUser}>Save</Button>
           <Button variant="outlined" color="secondary" onClick={this.cancelEdit}>Cancel</Button>
         </Card>
       ) //end of content for edit=true

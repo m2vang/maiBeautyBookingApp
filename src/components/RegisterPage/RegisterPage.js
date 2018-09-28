@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import './RegisterPage.css';
 
 class RegisterPage extends Component {
   constructor(props) {
@@ -33,7 +34,7 @@ class RegisterPage extends Component {
       };
 
       // making the request to the server to post the new user's registration
-      axios.post('/api/user/registerUpdate/', body)
+      axios.post('/api/user/register/', body)
         .then((response) => {
           if (response.status === 201) {
             this.props.history.push('/home');
@@ -73,7 +74,7 @@ class RegisterPage extends Component {
 
   render() {
     return (
-      <div>
+      <div className="form">
         {this.renderAlert()}
         <form onSubmit={this.registerUser}>
           <h1>Register for an Account</h1>

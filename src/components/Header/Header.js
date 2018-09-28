@@ -27,7 +27,7 @@ class Header extends Component {
         <div className="instructions">
           <div>
             <h1 className="welcome">Welcome, {this.props.user.first_name}!</h1>
-            <Button variant="outlined" color="secondary" onClick={this.logout}>
+            <Button className="button" variant="outlined" color="secondary" onClick={this.logout}>
               Log Out
             </Button>
           </div>

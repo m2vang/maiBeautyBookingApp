@@ -4,9 +4,10 @@ const router = express.Router();
 
 router.post('/', (req, res) => {
     const appt = req.body;
-    const postQuery = `INSERT INTO "calendar" ("start", "end")
-                        VALUES ($1, $2);`;
-    pool.query(postQuery, [appt.start, appt.end])
+    console.log('/api/unavailability', appt);
+    const postQuery = `INSERT INTO "calendar" ("start", "end", "user_id","service_types_id")
+                        VALUES ($1, $2, $3, $4);`;
+    pool.query(postQuery, [appt.start, appt.end, req.user.id, appt.type])
         .then(result => res.sendStatus(201))
         .catch(error => console.log('error in POST', error));
 });
@@ -31,7 +32,11 @@ router.get('/services', (req, res) => {
 });
 
 router.get('/', (req, res) => {
-    const unavailableQuery = `SELECT *, 'Unavailable' as title FROM "unavailability";`;
+    let unavailableQuery = `SELECT "user_id", "start", "end", "service_types"."service_name", "service_types"."service_name" as title 
+                                FROM "calendar" JOIN "service_types" 
+                                ON "calendar"."service_types_id" = "service_types"."id" 
+                                WHERE "cancel_status" = false;`;
+    
     pool.query(unavailableQuery)
         .then(result => res.send(result.rows))
         .catch(error => {

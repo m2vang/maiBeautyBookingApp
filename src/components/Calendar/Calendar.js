@@ -30,7 +30,11 @@ const mapStateToProps = state => ({
 class BigCalendar extends Component {
     constructor(...args) {
         super(...args);
-        this.state = { events }
+        this.state = { eventToAdd: {
+            start: '',
+            end: '',
+            title: '',
+        } }
     }
 
     componentDidMount() {
@@ -49,14 +53,12 @@ class BigCalendar extends Component {
             const title = window.prompt('Book Service:')
             if (title) {
                 this.setState({
-                    events: [
-                        ...this.state.events,
-                        {
-                            start,
-                            end,
-                            title,
-                        },
-                    ],
+                    eventToAdd: {
+                        ...this.state.eventToAdd, // keep the type
+                        start,
+                        end,
+                        title,
+                    },
                 })
                 this.dispatchAppt();
             }
@@ -64,14 +66,12 @@ class BigCalendar extends Component {
             const title = window.prompt('Block Out For:')
             if (title) {
                 this.setState({
-                    events: [
-                        ...this.state.events,
-                        {
-                            start,
-                            end,
-                            title,
-                        },
-                    ],
+                    eventToAdd: {
+                        start,
+                        end,
+                        title,
+                        type: 16
+                    },
                 })
                 this.dispatchUnavailability();
             }
@@ -80,27 +80,38 @@ class BigCalendar extends Component {
 
     dispatchAppt = () => {
         this.props.dispatch({
-            type: UNAVAILABLE_ACTIONS.STORE_UNAVAILABILITY,
-            payload: this.state.events
+            type: UNAVAILABLE_ACTIONS.POST_NEW_AVAILABILITY_DATA,
+            payload: this.state.eventToAdd
         });
     }
 
     dispatchUnavailability = () => {
         this.props.dispatch({
-            type: UNAVAILABLE_ACTIONS.STORE_UNAVAILABILITY,
-            payload: this.state.events
+            type: UNAVAILABLE_ACTIONS.POST_NEW_AVAILABILITY_DATA,
+            payload: this.state.eventToAdd
         });
+    }
+
+    setApptType = (type) => {
+        this.setState({
+            eventToAdd: {
+                type: type
+                // Might need to spread this
+            },
+        })
     }
 
     render() {
 
         const thisUnavailable = this.props.unavailable.unavailability.map((event, index) => {
             const modifiedEvent = event;
+            if(this.props.user.id !== modifiedEvent.user_id) {
+                modifiedEvent.title = 'Unavailable';
+            }
             modifiedEvent.start = new Date(modifiedEvent.start);
             modifiedEvent.end = new Date(modifiedEvent.end);
             return modifiedEvent;
         }) 
-
 
         const { localizer } = this.props
         let content = null;
@@ -108,7 +119,7 @@ class BigCalendar extends Component {
             content = (
                 <div>
                     <h3>Services Offered:</h3>
-                    <SelectService />
+                    <SelectService setApptType={this.setApptType} />
                 </div>
             )
         } else if (this.props.if_stylist === true) {
@@ -118,8 +129,6 @@ class BigCalendar extends Component {
                 </div>
             )
         }
-
-        console.log('Admin unavailablility:',this.props.unavailable.unavailability);
         
         if (this.props.unavailable.unavailability) {
             return (
@@ -157,7 +166,24 @@ class BigCalendar extends Component {
                         //this will allow the user to click on the slot & see the event title
                         onSelectEvent={event => alert(event.title)}
                         onSelectSlot={this.handleSelect}
-                    />
+                        eventPropGetter={(event, start, end, isSelected) => {
+                            let newStyle = {
+                                backgroundColor: "lightgrey",
+                                color: 'black',
+                                borderRadius: "0px",
+                                border: "none"
+                            };
+
+                            if (event.title !== 'Unavailable') {
+                                newStyle.backgroundColor = "lightgreen"
+                            }
+
+                            return {
+                                className: "",
+                                style: newStyle
+                            };
+                        }}
+                />
                 </div>
             )
         } else {

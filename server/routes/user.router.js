@@ -72,7 +72,8 @@ router.get('/clientPastAppt', (req, res) => {
                         FROM "calendar" 
                         JOIN "service_types" ON "calendar"."service_types_id" = "service_types"."id"  
                         JOIN "category_types" ON "service_types"."category_types_id" = "category_types"."id" 
-                        WHERE "user_id" = $1 and "cancel_status" = false and ("end" <= CURRENT_DATE);`;
+                        WHERE "user_id" = $1 and "cancel_status" = false and ("end" <= CURRENT_DATE)
+                        ORDER BY "start";`;
     pool.query(pastApptQuery, [req.user.id])
       .then((result) => res.send(result.rows))
       .catch(error => {
@@ -91,7 +92,8 @@ router.get('/upcomingReminder', (req, res) => {
                         FROM "calendar" 
                         JOIN "service_types" ON "calendar"."service_types_id" = "service_types"."id"  
                         JOIN "category_types" ON "service_types"."category_types_id" = "category_types"."id" 
-                        WHERE "user_id" = $1 and "cancel_status" = false and ("end" >= CURRENT_DATE);`;
+                        WHERE "user_id" = $1 and "cancel_status" = false and ("end" >= CURRENT_DATE)
+                        ORDER BY "start";`;
     pool.query(upcomingApptQuery, [req.user.id])
       .then((result) => res.send(result.rows))
       .catch(error => {
@@ -103,6 +105,8 @@ router.get('/upcomingReminder', (req, res) => {
   }; //end of if-else auth.
 }); //end of GET 
 
+
+//Handles getting the client names for the admin
 router.get('/clientName', (req, res) => {
   if (req.isAuthenticated()) {
     const clientNameQuery = `SELECT "id", "first_name", "last_name", "telephone", "email" 
@@ -120,6 +124,7 @@ router.get('/clientName', (req, res) => {
   }; //end of if-else auth.
 }); //end of GET
 
+//handles getting appts 
 router.get(`/adminClientAppt`, (req, res) => {
   if (req.isAuthenticated()) {
     const user = req.query.user;

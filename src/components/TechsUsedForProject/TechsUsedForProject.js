@@ -1,44 +1,56 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardActionArea from '@material-ui/core/CardActionArea';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
-import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+import '../TechsUsedForProject/TechsUsedForProject.css';
 
-const styles = {
-    card: {
-        maxWidth: 345,
-    },
-    media: {
-        height: 140,
-    },
-};
-
-function MediaCard(props) {
-    const { classes } = props;
+function TechCard() {
     return (
-        <Card className={classes.card}>
-            <CardActionArea>
-                <CardMedia
-                    className={classes.media}
-                    image="/static/images/cards/contemplative-reptile.jpg"
-                    title="React"
-                />
-                <CardContent>
-                    <Typography gutterBottom variant="headline" component="h2">
-                        React
-                    </Typography>
-                </CardContent>
-            </CardActionArea>
-        </Card>
+        <div>
+            <Button variant="contained">
+                React JS
+            </Button>
+            <br />
+            <Button variant="contained">
+                Node JS
+            </Button>
+            <br />
+            <Button variant="contained">
+                Express
+            </Button>
+            <br />
+            <Button variant="contained">
+                Redux Saga
+            </Button>
+            <br />
+            <Button variant="contained">
+                PostgreSQL
+            </Button>
+            <br />
+            <Button variant="contained">
+                Material UI
+            </Button>
+            <br />
+            <Button variant="contained">
+                CSS
+            </Button>
+            <br />
+            <Button variant="contained">
+                Passport
+            </Button>
+            <br />
+            <Button variant="contained">
+                Moment.js
+            </Button>
+            <br />
+            <Button variant="contained">
+                Sweet Alerts
+            </Button>
+            <br />
+            <Button variant="contained">
+                React-Big-Calendar
+            </Button>
+            <br />
+        </div>
     );
 }
 
-MediaCard.propTypes = {
-    classes: PropTypes.object.isRequired,
-};
-
-export default withStyles(styles)(MediaCard);
+export default TechCard;
