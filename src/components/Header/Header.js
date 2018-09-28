@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { triggerLogout } from '../../redux/actions/loginActions';
 import { USER_ACTIONS } from '../../redux/actions/userActions';
 import '../Header/Header.css';
+import Button from '@material-ui/core/Button';
 
 const mapStateToProps = state => ({
   user: state.user,
@@ -26,13 +27,20 @@ class Header extends Component {
         <div className="instructions">
           <div>
             <h1 className="welcome">Welcome, {this.props.user.first_name}!</h1>
-            <button onClick={this.logout}>
+            <Button variant="outlined" color="secondary" onClick={this.logout}>
               Log Out
-            </button>
+            </Button>
           </div>
         </div>
       )
+    } else if (this.props.user.email === null) {
+      content = (
+        <div className="appName">
+          <h1>Mai Beauty Booking App</h1>
+        </div>
+      )
     }
+
     return (
       <div>
         {content}

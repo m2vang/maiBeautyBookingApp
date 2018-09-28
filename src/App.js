@@ -14,15 +14,16 @@ import RegisterPage from './components/RegisterPage/RegisterPage';
 import InfoPage from './components/InfoPage/InfoPage';
 
 //admin view
-import AdminCalendar from './components/Calendar/Calendar';
+import Calendar from './components/Calendar/Calendar';
 import ListOfClients from './components/ListOfClients/ListOfClients';
 
 //client view
-import BookAnAppt from './components/BookAnAppt/BookAnAppt';
 import AppointmentsPage from './components/AppointmentsPage/AppointmentsPage';
 
 //error view
 import ErrorPage from './components/ErrorPage/ErrorPage';
+
+import TechsUsedForProject from './components/TechsUsedForProject/TechsUsedForProject';
 
 import './styles/main.css';
 
@@ -49,16 +50,16 @@ const App = () => (
           component={AppointmentsPage}
         />
         <Route
-          path="/bookappt"
-          component={BookAnAppt}
-        />
-        <Route
           path="/calendar"
-          component={AdminCalendar}
+          component={Calendar}
         />
         <Route
           path="/clients"
           component={ListOfClients}
+        />
+        <Route
+          path="/techs"
+          component={TechsUsedForProject}
         />
         {/* OTHERWISE (no path!) */}
         {/* <Route render={() => <h1>404</h1>} /> */}

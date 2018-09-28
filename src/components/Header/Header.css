@@ -1,3 +1,10 @@
 button {
     float: right;
 }
+
+.appName {
+    text-align: center;
+    font-size-adjust: 32px;
+    padding: 10px;
+    text-decoration: underline;
+}

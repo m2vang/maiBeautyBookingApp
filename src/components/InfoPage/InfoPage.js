@@ -133,6 +133,7 @@ class InfoPage extends Component {
               <label htmlFor="first_name">
                 First Name:
               <input
+                  className="newInput"
                   type="text"
                   name="first_name"
                   value={this.props.user.first_name}
