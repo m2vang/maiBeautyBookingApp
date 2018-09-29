@@ -13,7 +13,6 @@ const mapStateToProps = state => ({
 class LoginPage extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       email: '',
       password: '',
@@ -33,7 +32,6 @@ class LoginPage extends Component {
 
   login = (event) => {
     event.preventDefault();
-
     if (this.state.email === '' || this.state.password === '') {
       this.props.dispatch(formError());
     } else {
