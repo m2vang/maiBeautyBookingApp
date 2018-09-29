@@ -11,7 +11,6 @@ import moment from 'moment';
 import { connect } from 'react-redux';
 
 import Nav from '../../components/Nav/Nav';
-import events from './Events';
 import SelectService from '../SelectService/SelectService';
 import { USER_ACTIONS } from '../../redux/actions/userActions';
 import { UNAVAILABLE_ACTIONS } from '../../redux/actions/unavailableActions';
@@ -30,16 +29,18 @@ const mapStateToProps = state => ({
 class BigCalendar extends Component {
     constructor(...args) {
         super(...args);
-        this.state = { eventToAdd: {
-            start: '',
-            end: '',
-            title: '',
-        } }
+        this.state = {
+            eventToAdd: {
+                start: '',
+                end: '',
+                title: '',
+            }
+        }
     }
 
     componentDidMount() {
         this.props.dispatch({ type: USER_ACTIONS.FETCH_USER });
-        this.props.dispatch({ type: UNAVAILABLE_ACTIONS.FETCH_UNAVAILABILITY });       
+        this.props.dispatch({ type: UNAVAILABLE_ACTIONS.FETCH_UNAVAILABILITY });
     }
 
     componentDidUpdate() {
@@ -48,33 +49,27 @@ class BigCalendar extends Component {
         } //end of if statement
     }
 
-    handleSelect = ({ start, end }) => {
+    handleSelect = ({ start, end, title }) => {
         if (this.props.user.if_stylist === false) {
-            const title = window.prompt('Book Service:')
-            if (title) {
-                this.setState({
-                    eventToAdd: {
-                        ...this.state.eventToAdd, // keep the type
-                        start,
-                        end,
-                        title,
-                    },
-                })
-                this.dispatchAppt();
-            }
+            this.setState({
+                eventToAdd: {
+                    ...this.state.eventToAdd, // keep the type
+                    start,
+                    end,
+                    title,
+                },
+            })
+            this.dispatchAppt();
         } else if (this.props.user.if_stylist === true) {
-            const title = window.prompt('Block Out For:')
-            if (title) {
-                this.setState({
-                    eventToAdd: {
-                        start,
-                        end,
-                        title,
-                        type: 16
-                    },
-                })
-                this.dispatchUnavailability();
-            }
+            this.setState({
+                eventToAdd: {
+                    start,
+                    end,
+                    title,
+                    type: 16
+                },
+            })
+            this.dispatchUnavailability();
         }
     }
 
@@ -102,16 +97,15 @@ class BigCalendar extends Component {
     }
 
     render() {
-
         const thisUnavailable = this.props.unavailable.unavailability.map((event, index) => {
             const modifiedEvent = event;
-            if(this.props.user.id !== modifiedEvent.user_id) {
-                modifiedEvent.title = 'Unavailable';
-            }
+            // if (this.props.user.id !== modifiedEvent.user_id) {
+            //     modifiedEvent.title = 'Unavailable';
+            // }
             modifiedEvent.start = new Date(modifiedEvent.start);
             modifiedEvent.end = new Date(modifiedEvent.end);
             return modifiedEvent;
-        }) 
+        })
 
         const { localizer } = this.props
         let content = null;
@@ -124,17 +118,14 @@ class BigCalendar extends Component {
             )
         } else if (this.props.if_stylist === true) {
             content = (
-                <div>
-                  
-                </div>
+                <div></div>
             )
         }
-        
+
         if (this.props.unavailable.unavailability) {
             return (
                 <div>
                     <Nav />
-                    {/* {JSON.stringify(this.props.unavailable.unavailability)} */}
                     {content}
                     <br />
                     <ExampleControlSlot.Entry waitForOutlet>
@@ -149,7 +140,7 @@ class BigCalendar extends Component {
                         views={{
                             week: true,
                         }}
-                        events={thisUnavailable}                        
+                        events={thisUnavailable}
                         startAccessor="start"
                         endAccessor="end"
                         allDayAccessor="allDay"
@@ -174,8 +165,41 @@ class BigCalendar extends Component {
                                 border: "none"
                             };
 
-                            if (event.title !== 'Unavailable') {
+                            // if (event.title !== 'Unavailable') {
+                            //     newStyle.backgroundColor = "lightgreen"
+                            // }
+                            if (event.title === 'Women Hair Cut') {
+                                newStyle.backgroundColor = "yellow"
+                            } else if (event.title === 'Men Hair Cut') {
+                                newStyle.backgroundColor = "yellow"
+                            } else if (event.title === 'Child Hair Cut') {
+                                newStyle.backgroundColor = "yellow"
+                            } else if (event.title === 'Highlights') {
                                 newStyle.backgroundColor = "lightgreen"
+                            } else if (event.title === 'Balayage/Ombre') {
+                                newStyle.backgroundColor = "lightgreen"
+                            } else if (event.title === 'Shadow Root') {
+                                newStyle.backgroundColor = "lightgreen"
+                            } else if (event.title === 'All Over Glaze') {
+                                newStyle.backgroundColor = "lightgreen"
+                            } else if (event.title === 'Perm') {
+                                newStyle.backgroundColor = "lightgreen"
+                            } else if (event.title === 'Lip/Brow Wax') {
+                                newStyle.backgroundColor = "lightpink"
+                            } else if (event.title === 'Manicure') {
+                                newStyle.backgroundColor = "lightpink"
+                            } else if (event.title === 'Pedicure') {
+                                newStyle.backgroundColor = "lightpink"
+                            } else if (event.title === 'Deep Hair Treatment') {
+                                newStyle.backgroundColor = "lightpink"
+                            } else if (event.title === 'Blowout & Style') {
+                                newStyle.backgroundColor = "lightpink"
+                            } else if (event.title === 'Up-Do') {
+                                newStyle.backgroundColor = "lightpink"
+                            } else if (event.title === 'Extensions') {
+                                newStyle.backgroundColor = "lightpink"
+                            } else if (event.title === 'Unavailable') {
+                                newStyle.backgroundColor = "lightgrey"
                             }
 
                             return {
@@ -183,7 +207,7 @@ class BigCalendar extends Component {
                                 style: newStyle
                             };
                         }}
-                />
+                    />
                 </div>
             )
         } else {

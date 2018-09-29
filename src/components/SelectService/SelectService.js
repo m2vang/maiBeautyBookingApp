@@ -43,7 +43,7 @@ class SelectService extends Component {
                         )
                     })}
                 </select>
-                <h4>Your recommended time frame is: </h4>
+                <h4>Your recommended time frame is: {}</h4>
             </div>
         )
     }
