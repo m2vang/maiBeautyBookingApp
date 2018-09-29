@@ -12,18 +12,8 @@ router.post('/', (req, res) => {
         .catch(error => console.log('error in POST', error));
 });
 
-// router.get('/', (req, res) => {
-//     const availableQuery = `SELECT "id", "start", "end"
-//                             FROM "unavailability";`;
-//     pool.query(availableQuery)
-//         .then(result => res.send(result.rows))
-//         .catch(error => {
-//             console.log('error in GET', error);
-//         });
-// });;
-
 router.get('/services', (req, res) => {
-    const serviceQuery = `SELECT * FROM "service_types" ORDER BY "category_types_id";`;
+    const serviceQuery = `SELECT * FROM "service_types" ORDER BY "id";`;
     pool.query(serviceQuery)
         .then(result => res.send(result.rows))
         .catch(error => {
@@ -32,10 +22,12 @@ router.get('/services', (req, res) => {
 });
 
 router.get('/', (req, res) => {
-    let unavailableQuery = `SELECT "user_id", "start", "end", "service_types"."service_name", "service_types"."service_name" as title 
-                                FROM "calendar" JOIN "service_types" 
-                                ON "calendar"."service_types_id" = "service_types"."id" 
-                                WHERE "cancel_status" = false;`;
+    let unavailableQuery = `SELECT "user_id", "start", "end", "service_types"."service_name", "user"."if_stylist", 
+                            "service_types"."service_name" as title 
+                            FROM "calendar" JOIN "service_types" 
+                            ON "calendar"."service_types_id" = "service_types"."id" 
+                            JOIN "user" ON "calendar"."user_id" = "user"."id" 
+                            WHERE "cancel_status" = false;`;
     
     pool.query(unavailableQuery)
         .then(result => res.send(result.rows))

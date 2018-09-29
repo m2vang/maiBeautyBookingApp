@@ -99,9 +99,9 @@ class BigCalendar extends Component {
     render() {
         const thisUnavailable = this.props.unavailable.unavailability.map((event, index) => {
             const modifiedEvent = event;
-            // if (this.props.user.id !== modifiedEvent.user_id) {
-            //     modifiedEvent.title = 'Unavailable';
-            // }
+            if (this.props.user.id !== modifiedEvent.user_id && this.props.user.if_stylist === false) {
+                modifiedEvent.title = 'Unavailable';
+            }
             modifiedEvent.start = new Date(modifiedEvent.start);
             modifiedEvent.end = new Date(modifiedEvent.end);
             return modifiedEvent;
@@ -165,9 +165,6 @@ class BigCalendar extends Component {
                                 border: "none"
                             };
 
-                            // if (event.title !== 'Unavailable') {
-                            //     newStyle.backgroundColor = "lightgreen"
-                            // }
                             if (event.title === 'Women Hair Cut') {
                                 newStyle.backgroundColor = "yellow"
                             } else if (event.title === 'Men Hair Cut') {

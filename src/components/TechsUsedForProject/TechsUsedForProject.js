@@ -8,7 +8,6 @@ function TechCard() {
             <Button variant="contained">
                 React JS
             </Button>
-            <br />
             <Button variant="contained">
                 Node JS
             </Button>

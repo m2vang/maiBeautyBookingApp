@@ -8,7 +8,6 @@ class SelectService extends Component {
         super(props);
         this.state = {
             services: [],
-            selectedService: [],
         };
     } //end of constructor
 

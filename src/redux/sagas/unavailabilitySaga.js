@@ -1,7 +1,7 @@
 import { select, put, takeLatest } from 'redux-saga/effects';
 import { UNAVAILABLE_ACTIONS } from '../actions/unavailableActions';
 import { getUnavailability } from '../selectors/unavailabilitySelector';
-import { fetchUnavailability, postUnavailability, removeAvailability } from '../requests/unavailabilityRequests';
+import { fetchUnavailability, postUnavailability } from '../requests/unavailabilityRequests';
 
 function* fetch() {
     try {
@@ -11,15 +11,6 @@ function* fetch() {
         alert("Failed to fetch unavailability");
     }
 }
-
-// function* getUn(action) {
-//     try {
-//         const unavailability = yield fetchUnavailability();
-//         yield put({ type: UNAVAILABLE_ACTIONS.STORE_UNAVAILABILITY, payload: unavailability });
-//     } catch (error) {
-//         alert("Failed to fetch unavailability");
-//     }
-// }
 
 function* post() {
     try {
@@ -44,21 +35,10 @@ function* postData(action) {
     }
 }
 
-function* remove(action) {
-    try {
-        yield removeAvailability(action.payload);
-        yield put({ type: UNAVAILABLE_ACTIONS.FETCH_UNAVAILABILITY });
-    } catch (error) {
-        alert("Failed to delete availability");
-    }
-}
-
 function* availabilitySaga() {
     yield takeLatest(UNAVAILABLE_ACTIONS.FETCH_UNAVAILABILITY, fetch);
     yield takeLatest(UNAVAILABLE_ACTIONS.RESET_NEW_AVAILABILITY, post);
     yield takeLatest(UNAVAILABLE_ACTIONS.POST_NEW_AVAILABILITY_DATA, postData);
-    //yield takeLatest(UNAVAILABLE_ACTIONS.RESET_NEW_AVAILABILITY, remove);
-    // yield takeLatest(UNAVAILABLE_ACTIONS.FETCH_UNAVAILABILITY, getUn);
 }
 
 export default availabilitySaga;
