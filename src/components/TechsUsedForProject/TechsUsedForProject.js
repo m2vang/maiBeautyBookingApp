@@ -4,50 +4,40 @@ import '../TechsUsedForProject/TechsUsedForProject.css';
 
 function TechCard() {
     return (
-        <div>
-            <Button variant="contained">
+        <div className="techs">
+            <div>
                 React JS
-            </Button>
-            <Button variant="contained">
+            </div>
+            <div>
                 Node JS
-            </Button>
-            <br />
-            <Button variant="contained">
+            </div>
+            <div>
                 Express
-            </Button>
-            <br />
-            <Button variant="contained">
+            </div>
+            <div>
                 Redux Saga
-            </Button>
-            <br />
-            <Button variant="contained">
+            </div>
+            <div>
                 PostgreSQL
-            </Button>
-            <br />
-            <Button variant="contained">
+            </div>
+            <div>
                 Material UI
-            </Button>
-            <br />
-            <Button variant="contained">
+            </div>
+            <div>
                 CSS
-            </Button>
-            <br />
-            <Button variant="contained">
+            </div>
+            <div>
                 Passport
-            </Button>
-            <br />
-            <Button variant="contained">
+            </div>
+            <div>
                 Moment.js
-            </Button>
-            <br />
-            <Button variant="contained">
+            </div>
+            <div>
                 Sweet Alerts
-            </Button>
-            <br />
-            <Button variant="contained">
+            </div>
+            <div>
                 React-Big-Calendar
-            </Button>
-            <br />
+            </div>
         </div>
     );
 }

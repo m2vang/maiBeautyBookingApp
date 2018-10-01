@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import { Bar } from 'react-chartjs-2';
+//Nav is the navigation bar
+import Nav from '../../components/Nav/Nav';
 
 const mapStateToProps = state => ({
     user: state.user,
@@ -46,13 +48,18 @@ class Chart extends Component {
 
         return (
             <div>
+                <Nav />
                 {JSON.stringify(this.state.service_data)}
                 {this.state.service_data.map((event, index) => {
+                    console.log('event', event);
+                    
                     return (
                         <Bar
                             key={index}
-                            label={event.service_name}
+                            label=''
                             data={event.count}
+                            width={100}
+                            height={50}
                         />
                     )
                 })

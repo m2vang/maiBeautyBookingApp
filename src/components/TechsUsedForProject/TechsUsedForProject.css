@@ -1,3 +1,9 @@
-Button {
-    float: left;
+.techs {
+    text-align: center;
+    background-color: #F7FFF6;
+    width: 400px;
+    height: 200px;
+    border-radius: 20px;
+    padding: 20px;
+    margin-left: 33%;
 }
