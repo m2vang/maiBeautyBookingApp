@@ -1,5 +1,4 @@
 import React from 'react';
-import Button from '@material-ui/core/Button';
 import '../TechsUsedForProject/TechsUsedForProject.css';
 
 function TechCard() {

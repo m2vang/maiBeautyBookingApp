@@ -20,9 +20,6 @@ import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 
-import TextField from '@material-ui/core/TextField';
-
-
 const mapStateToProps = state => ({
   user: state.user,
 }); //end of mapStateToProps
@@ -252,8 +249,9 @@ class InfoPage extends Component {
     if (this.props.user.if_stylist === true) {
       serviceTypeData = (
         <div>
-          <form>
+          <form className="form">
             <h1>Add a new Service</h1>
+            <label>Category Type</label>
             <select onChange={this.handleInputChangeFor('newCategory')}>
               {this.state.category.map((category, index) => {
                 return (
@@ -279,7 +277,7 @@ class InfoPage extends Component {
                 onChange={this.handleInputChangeFor('newDuration')}
               />
             </label>
-            <Button variant="outlined" color="primary" onClick={this.addService}>Add</Button>
+            <Button className="button" variant="outlined" color="primary" onClick={this.addService}>Add</Button>
           </form>
           <ExpansionPanel>
             <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
