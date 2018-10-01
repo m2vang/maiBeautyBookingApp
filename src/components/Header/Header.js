@@ -25,12 +25,10 @@ class Header extends Component {
     if (this.props.user.email) {
       content = (
         <div className="instructions">
-          <div>
-            <h1 className="welcome">Welcome, {this.props.user.first_name}!</h1>
-            <Button className="button" variant="outlined" color="secondary" onClick={this.logout}>
-              Log Out
-            </Button>
-          </div>
+          <h1 className="welcome">Welcome, {this.props.user.first_name}!</h1>
+          <Button className="button" variant="outlined" color="secondary" onClick={this.logout}>
+            Log Out
+          </Button>
         </div>
       )
     } else if (this.props.user.email === null) {

@@ -111,12 +111,12 @@ class BigCalendar extends Component {
         let content = null;
         if (this.props.user.if_stylist === false) {
             content = (
-                <div>
+                <div className="selectService">
                     <h3>Services Offered:</h3>
                     <SelectService setApptType={this.setApptType} />
                 </div>
             )
-        } else if (this.props.if_stylist === true) {
+        } else if (this.props.user.if_stylist === true) {
             content = (
                 <div></div>
             )

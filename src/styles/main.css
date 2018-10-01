@@ -1,7 +1,6 @@
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    /* background-image: url('../joanna-kosinska-61432-unsplash.jpg');
-    background-size: cover; */
+    font-family: 'Comfortaa', cursive;
+    background-color: #8EA8C3;
 }
 
 .instructions h1 {
@@ -11,18 +10,21 @@ body {
 
 .instructions {
     padding: 5px;
+    background-color: #D7FDEC;
 }
 
 form {
     width: 30%;
     margin: 20px auto;
     padding: 25px;
-    border-radius: 2px;
+    border-radius: 20px;
+    background-color: #A9FBD7;
 }
 
 input {
     margin: 5px;
     margin-bottom: 10px;
+    background-color: #F7FFF6;
 }
 
 input[type="submit"] {
@@ -46,8 +48,8 @@ input[type="submit"] {
 }
 
 .navbar {
-  width: 50%;
-  border-radius: 0px;
+  width: 100%;
+  background-color: #D7FDEC;
 }
 
 ul {
@@ -72,5 +74,5 @@ li a {
 /* Change the link color to #111 (black) on hover */
 li a:hover {
     text-decoration: underline;
-    color: #c17ac4;
+    color: #F7FFF6;
 }
