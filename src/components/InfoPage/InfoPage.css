@@ -3,9 +3,11 @@
 }
 
 .info {
+    background-color: #F7FFF6;
+    border-radius: 20px;
     padding: 10px;
-    width: 20%;
-    height: 150px;
+    width: 30%;
+    height: 180px;
     align-content: center;
     display: block;
     margin-left: 35%;
@@ -17,8 +19,12 @@
     margin-top: 5%;
     width: 30%;
     padding: 10px;
+    height: 220px;
+    border-radius: 20px;
+    text-align: center;
+    background-color: #F7FFF6;
 }
 
 .newInput {
-    background-color: lightblue;
+    background-color: #D7FDEC;
 }

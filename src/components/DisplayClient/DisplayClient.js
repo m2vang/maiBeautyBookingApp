@@ -140,9 +140,7 @@ class DisplayClient extends Component {
             <div>
                 <ExpansionPanel>
                     <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                        <div>
-                            <h3>{this.props.clientName.first_name} {this.props.clientName.last_name}</h3>
-                        </div>
+                        <p>{this.props.clientName.first_name} {this.props.clientName.last_name}</p>
                     </ExpansionPanelSummary>
                     <ExpansionPanelDetails className="details">
                         <div>

@@ -30,18 +30,8 @@ const unavailability = (state = [], action) => {
     }
 }
 
-const estimate = (state = {duration: 0}, action) => {
-    switch (action.type) {
-        case UNAVAILABLE_ACTIONS.FETCH_ESTIMATE_DURATION:
-            return {...state, duration: action.payload};
-        default:
-            return state;
-    }
-}
-
 export default combineReducers({
     appointment,
     newAppointment,
     unavailability,
-    estimate,
 });

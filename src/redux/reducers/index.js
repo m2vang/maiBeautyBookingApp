@@ -6,7 +6,7 @@ import unavailable from './unavailableReducer';
 const store = combineReducers({
   user,
   login,
-  unavailable
+  unavailable,
 });
 
 export default store;

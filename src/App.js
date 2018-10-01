@@ -16,7 +16,7 @@ import InfoPage from './components/InfoPage/InfoPage';
 //admin view
 import Calendar from './components/Calendar/Calendar';
 import ListOfClients from './components/ListOfClients/ListOfClients';
-
+import Chart from './components/Chart/Chart';
 //client view
 import AppointmentsPage from './components/AppointmentsPage/AppointmentsPage';
 
@@ -56,6 +56,10 @@ const App = () => (
         <Route
           path="/clients"
           component={ListOfClients}
+        />
+        <Route
+          path="/chart"
+          component={Chart}
         />
         <Route
           path="/techs"

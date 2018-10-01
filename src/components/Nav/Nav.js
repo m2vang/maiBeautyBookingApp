@@ -13,7 +13,6 @@ class Nav extends Component {
     if (this.props.user && this.props.user.if_stylist === false) {
       content = (
         <div className="navbar">
-          <div>
             <ul>
               <li>
                 <Link to="/info"> My Profile </Link>
@@ -25,13 +24,11 @@ class Nav extends Component {
                 <Link to="/calendar"> Book an Appointment </Link>
               </li>
             </ul>
-          </div>
         </div>
       )
     } else if (this.props.user && this.props.user.if_stylist === true ){
       content = (
         <div className="navbar">
-          <div>
             <ul>
               <li>
                 <Link to="/info"> My Profile </Link>
@@ -43,7 +40,6 @@ class Nav extends Component {
                 <Link to="/clients"> Clients </Link>
               </li>
             </ul>
-          </div>
         </div>
       )
     }

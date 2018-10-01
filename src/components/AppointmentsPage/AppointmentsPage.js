@@ -75,7 +75,7 @@ class AppointmentsPage extends Component {
         //this will render the client's past appts
         if (this.props.user.email) {
             pastContent = (
-                <Table>
+                <Table className="table">
                     <TableHead>
                         <TableRow>
                             <TableCell onClick={this.handleSortChange("Category")}>Category</TableCell>
@@ -100,7 +100,7 @@ class AppointmentsPage extends Component {
         //this will render the client's upcoming appts
         if (this.props.user.email) {
             upcomingContent = (
-                <Table>
+                <Table className="table">
                     <TableHead>
                         <TableRow>
                             <TableCell>Category</TableCell>
