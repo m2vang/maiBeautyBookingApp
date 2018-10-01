@@ -251,14 +251,16 @@ class InfoPage extends Component {
         <div>
           <form className="form">
             <h1>Add a new Service</h1>
-            <label>Category Type</label>
-            <select onChange={this.handleInputChangeFor('newCategory')}>
-              {this.state.category.map((category, index) => {
-                return (
-                  <option key={index} value={category.id}>{category.category}</option>
-                )
-              })}
-            </select>
+            <label htmlFor="category_type">
+              Category Type:
+              <select onChange={this.handleInputChangeFor('newCategory')}>
+                {this.state.category.map((category, index) => {
+                  return (
+                    <option key={index} value={category.id}>{category.category}</option>
+                  )
+                })}
+              </select>
+            </label>
             <label htmlFor="service_name">
               Service Name:
               <input

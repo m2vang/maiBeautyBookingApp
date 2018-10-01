@@ -74,7 +74,7 @@ class RegisterPage extends Component {
 
   render() {
     return (
-      <div className="form">
+      <div className="regform">
         {this.renderAlert()}
         <form onSubmit={this.registerUser}>
           <h1>Register for an Account</h1>
