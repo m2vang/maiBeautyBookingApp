@@ -143,6 +143,16 @@ class InfoPage extends Component {
   } //end of removeService
 
   handleInputChangeFor = propertyName => (event) => {
+    console.log('in handleInputChangeFor', event);
+
+    this.setState({
+      [propertyName]: event.target.value,
+    });
+  }
+
+  handleInputChangeForService = propertyName => (event) => {
+    console.log('in handleInputChangeForService', event);
+    
     this.setState({
       [propertyName]: event.target.value,
     });
@@ -253,7 +263,7 @@ class InfoPage extends Component {
             <h1>Add a new Service</h1>
             <label htmlFor="category_type">
               Category Type:
-              <select onChange={this.handleInputChangeFor('newCategory')}>
+              <select onChange={this.handleInputChangeForService('newCategory')}>
                 {this.state.category.map((category, index) => {
                   return (
                     <option key={index} value={category.id}>{category.category}</option>
@@ -267,7 +277,7 @@ class InfoPage extends Component {
                 type="text"
                 name="service_name"
                 value={this.state.newService}
-                onChange={this.handleInputChangeFor('newService')}
+                onChange={this.handleInputChangeForService('newService')}
               />
             </label>
             <label htmlFor="duration">
@@ -276,7 +286,7 @@ class InfoPage extends Component {
                 type="number"
                 name="duration"
                 value={this.state.newDuration}
-                onChange={this.handleInputChangeFor('newDuration')}
+                onChange={this.handleInputChangeForService('newDuration')}
               />
             </label>
             <Button className="button" variant="outlined" color="primary" onClick={this.addService}>Add</Button>
