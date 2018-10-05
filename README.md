@@ -33,7 +33,7 @@ Before you get started, make sure you have the following software installed on y
 Create a new database called `beauty_salon` and create the following tables:
 
 ```SQL
-<!-- This table is use to store all of the different users, including the admin (business owner) -->
+<-- This table is use to store all of the different users, including the admin (business owner) -->
 CREATE TABLE "user" (
 	id SERIAL PRIMARY KEY,
 	first_name VARCHAR(1020) NOT NULL,
@@ -44,11 +44,13 @@ CREATE TABLE "user" (
 	if_stylist BOOLEAN NOT NULL DEFAULT 'false'
 );
 
+<-- This table is use to store the different categories that each service falls into -->
 CREATE TABLE "category_types" (
 	id SERIAL PRIMARY KEY,
 	category VARCHAR(1020) NOT NULL
 );
 
+<-- This table is use to store the different service types that are offered -->
 CREATE TABLE "service_types" (
 	id SERIAL PRIMARY KEY,
 	service_name VARCHAR(1020) NOT NULL,
@@ -56,6 +58,7 @@ CREATE TABLE "service_types" (
 	category_types_id INT REFERENCES "category_types"
 );
 
+<-- This table is use to store all the notes for each specific user -->
 CREATE TABLE "notes" (
 	id SERIAL PRIMARY Key,
 	date TIMESTAMP,
@@ -63,6 +66,7 @@ CREATE TABLE "notes" (
 	user_id INT REFERENCES "user"
 );
 
+<-- This table is use to store all the data that will go into the calendar component -->
 CREATE TABLE "calendar" (
 	id SERIAL PRIMARY KEY,
 	user_id INT REFERENCES "user",
