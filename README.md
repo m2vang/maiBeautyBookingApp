@@ -3,6 +3,8 @@ Mai Beauty Booking App (MBBA) is a full-stack web based application that is for 
 
 **This application uses React to control the login requests and redirection in coordination with client-side routing.
 
+![alt text](https://github.com/m2vang/maiBeautyBookingApp/Calendar.png)
+
 ## Built With: <br>
 Node <br>
 Express <br>

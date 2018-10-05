@@ -143,11 +143,20 @@ class InfoPage extends Component {
   } //end of removeService
 
   handleInputChangeFor = propertyName => (event) => {
-    console.log('in handleInputChangeFor', event);
+    console.log('in handleInputChangeFor', event.target.value);
 
-    this.setState({
-      [propertyName]: event.target.value,
-    });
+    if (Object.keys(this.state.user).includes(propertyName)) {
+      this.setState({
+        user: {
+          ...this.state.user,
+          [propertyName]: event.target.value
+        }
+      });
+    } else {
+      this.setState({
+        [propertyName]: event.target.value,
+      });
+    }
   }
 
   handleInputChangeForService = propertyName => (event) => {
